@@ -5,7 +5,6 @@ import (
 	initialize2 "goHyper/core/initialize"
 )
 
-// 入口文件
 func main() {
 	// 初始化日志
 	global.HyperLog = initialize2.LogInit()
