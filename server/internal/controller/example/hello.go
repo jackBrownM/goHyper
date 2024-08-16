@@ -2,7 +2,7 @@ package example
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"goHyper/internal/service/example"
+	"goHyper/internal/logic/example"
 )
 
 var helloControllerInstance *helloController
