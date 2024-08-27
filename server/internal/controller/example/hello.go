@@ -5,16 +5,11 @@ import (
 	"goHyper/internal/logic/example"
 )
 
-var helloControllerInstance *helloController
-
-type helloController struct{}
-
-func init() {
-	helloControllerInstance = &helloController{}
+type helloController struct {
 }
 
 func HelloController() *helloController {
-	return helloControllerInstance
+	return &helloController{}
 }
 
 // SayHello 控制器层只做代码的接收验证

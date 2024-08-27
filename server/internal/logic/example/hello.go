@@ -4,16 +4,10 @@ import (
 	"goHyper/internal/model"
 )
 
-var helloServiceInstance *helloService
-
 type helloService struct{}
 
-func init() {
-	helloServiceInstance = &helloService{}
-}
-
 func HelloService() *helloService {
-	return helloServiceInstance
+	return &helloService{}
 }
 
 // HelloHay 服务层只做判断与逻辑处理

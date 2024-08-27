@@ -2,7 +2,7 @@ package initialize
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"goHyper/api/example"
+	"goHyper/internal/api/example"
 )
 
 func RouterInit() *fiber.App {

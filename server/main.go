@@ -2,19 +2,19 @@ package main
 
 import (
 	"goHyper/core/global"
-	initialize2 "goHyper/core/initialize"
+	initialize "goHyper/core/initialize"
 )
 
 // 入口文件
 func main() {
 	// 初始化日志
-	global.HyperLog = initialize2.LogInit()
+	global.HyperLog = initialize.LogInit()
 	// 初始化viper
-	initialize2.ViperInit()
+	initialize.ViperInit()
 	// 初始化数据库
-	global.HyperDB = initialize2.GormMysql()
+	// global.HyperDB = initialize.GormMysql()
 	// 初始化路由
-	router := initialize2.RouterInit()
+	router := initialize.RouterInit()
 	// 启动
 	router.Listen(":8081")
 }

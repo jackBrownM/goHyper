@@ -5,16 +5,10 @@ import (
 	"goHyper/internal/controller/example"
 )
 
-var helloRouterInstance *helloRouter
-
 type helloRouter struct{}
 
-func init() {
-	helloRouterInstance = &helloRouter{}
-}
-
 func HelloRouter() *helloRouter {
-	return helloRouterInstance
+	return &helloRouter{}
 }
 
 func (h *helloRouter) InitHello(Router fiber.Router) {
