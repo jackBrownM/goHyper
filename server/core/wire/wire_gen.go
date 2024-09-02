@@ -13,8 +13,8 @@ import (
 	"goHyper/internal/api"
 	"goHyper/internal/controller/admin"
 	"goHyper/internal/controller/example"
+	"goHyper/internal/dao"
 	"goHyper/internal/logic"
-	"goHyper/internal/model"
 )
 
 // Injectors from wire.go:
@@ -32,12 +32,12 @@ func InitializeSvc() (*svc.Init, error) {
 	if err != nil {
 		return nil, err
 	}
-	modelExample := model.NewExample()
-	logicExample := logic.NewExample(modelExample)
+	daoExample := dao.NewExample()
+	logicExample := logic.NewExample(daoExample)
 	exampleExample := example.NewExample(logicExample)
 	apiExample := api.NewExample(exampleExample)
-	modelAdmin := model.NewAdmin()
-	logicAdmin := logic.NewAdmin(modelAdmin)
+	daoAdmin := dao.NewAdmin()
+	logicAdmin := logic.NewAdmin(daoAdmin)
 	adminAdmin := admin.NewAdmin(logicAdmin)
 	apiAdmin := api.NewAdmin(adminAdmin)
 	route, err := router.NewRoute(config, logger, apiExample, apiAdmin)

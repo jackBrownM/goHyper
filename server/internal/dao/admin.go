@@ -1,4 +1,4 @@
-package model
+package dao
 
 type Admin struct{}
 

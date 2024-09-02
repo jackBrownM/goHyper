@@ -1,12 +1,12 @@
 package logic
 
-import "goHyper/internal/model"
+import "goHyper/internal/dao"
 
 type Admin struct {
-	admin *model.Admin
+	admin *dao.Admin
 }
 
-func NewAdmin(admin *model.Admin) *Admin {
+func NewAdmin(admin *dao.Admin) *Admin {
 	return &Admin{
 		admin: admin,
 	}

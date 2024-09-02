@@ -10,15 +10,15 @@ import (
 	"goHyper/core/svc"
 	"goHyper/internal/api"
 	"goHyper/internal/controller"
+	"goHyper/internal/dao"
 	"goHyper/internal/logic"
-	"goHyper/internal/model"
 )
 
 func InitializeSvc() (*svc.Init, error) {
 	wire.Build(
 		svc.NewInit,
 		svc.ProvideSet,
-		model.ProvideSet,
+		dao.ProvideSet,
 		logic.ProvideSet,
 		controller.ProvideSet,
 		api.ProvideSet,

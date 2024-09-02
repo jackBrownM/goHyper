@@ -1,12 +1,12 @@
 package logic
 
-import "goHyper/internal/model"
+import "goHyper/internal/dao"
 
 type Example struct {
-	example *model.Example
+	example *dao.Example
 }
 
-func NewExample(example *model.Example) *Example {
+func NewExample(example *dao.Example) *Example {
 	return &Example{
 		example: example,
 	}
