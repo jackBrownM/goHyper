@@ -34,7 +34,7 @@ func GenerateModel(db *gorm.DB, tableName string) string {
 
 func SaveToFile(code []byte, tableName string) {
 	fileName := fmt.Sprintf("./internal/ent/%s.go", tableName)
-	err := os.MkdirAll("ent", os.ModePerm)
+	err := os.MkdirAll("./internal/ent", os.ModePerm)
 	if err != nil {
 		log.Fatalf("Failed to create directory: %v", err)
 	}
