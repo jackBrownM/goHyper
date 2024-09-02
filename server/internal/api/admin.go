@@ -13,8 +13,8 @@ func NewAdmin(admin *admin.Admin) *Admin {
 	return &Admin{admin: admin}
 }
 
-func (r *Admin) Register(root fiber.Router, prefix string) {
-	adminGroup := root.Group(prefix)
+func (r *Admin) Register(root fiber.Router) {
+	adminGroup := root
 	{
 		// 登录系统
 		adminGroup.Get("/login", r.admin.Login).Name("登录系统")
