@@ -16,7 +16,7 @@ func Ok(ctx *fiber.Ctx, data ...any) error {
 	return ctx.JSON(Rsp{
 		Code: 0,
 		Msg:  "success",
-		Data: data[0],
+		Data: data,
 	})
 }
 
@@ -34,4 +34,28 @@ func FromErr(err *errLib.Err) *Rsp {
 		Msg:  err.GetMsg(),
 		Data: nil,
 	}
+}
+
+func CookieRemove(ctx *fiber.Ctx, cookieName string) {
+	ctx.Cookie(&fiber.Cookie{
+		Name:     cookieName,
+		Value:    "",
+		MaxAge:   0,
+		Path:     "",
+		Domain:   "",
+		Secure:   false,
+		HTTPOnly: true,
+	})
+}
+
+func CookieAdd(ctx *fiber.Ctx, cookieName string, cookieValue string, maxAge int) {
+	ctx.Cookie(&fiber.Cookie{
+		Name:     cookieName,
+		Value:    cookieValue,
+		MaxAge:   3600 * maxAge,
+		Path:     "",
+		Domain:   "",
+		Secure:   false,
+		HTTPOnly: true,
+	})
 }

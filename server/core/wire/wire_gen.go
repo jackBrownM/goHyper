@@ -36,7 +36,11 @@ func InitializeSvc() (*svc.Init, error) {
 	logicExample := logic.NewExample(daoExample)
 	exampleExample := example.NewExample(logicExample)
 	apiExample := api.NewExample(exampleExample)
-	daoAdmin := dao.NewAdmin()
+	db, err := base.NewMysql(config, logger)
+	if err != nil {
+		return nil, err
+	}
+	daoAdmin := dao.NewAdmin(db)
 	logicAdmin := logic.NewAdmin(daoAdmin)
 	adminAdmin := admin.NewAdmin(logicAdmin)
 	apiAdmin := api.NewAdmin(adminAdmin)

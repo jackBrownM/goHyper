@@ -14,9 +14,9 @@ func NewAdmin(admin *admin.Admin) *Admin {
 }
 
 func (r *Admin) Register(root fiber.Router) {
-	adminGroup := root
+	adminGroup := root.Group("/system")
 	{
-		// 登录系统
-		adminGroup.Get("/login", r.admin.Login).Name("登录系统")
+		adminGroup.Post("/login", r.admin.Login).Name("登录系统")
+		adminGroup.Post("/logout", r.admin.Logout).Name("退出系统")
 	}
 }

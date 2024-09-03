@@ -8,10 +8,16 @@ import (
 	"goHyper/libs/svcLib"
 )
 
+type Jwt struct {
+	JwtSignKey string
+	JwtAesKey  string
+}
+
 type Config struct {
 	Svc   svcLib.Config
 	MySQL mysqlLib.Config
 	Redis redisLib.Config
+	Admin Jwt
 }
 
 func NewConfig() (*Config, error) {

@@ -2,6 +2,7 @@ package ent
 
 type SystemAuthAdmin struct {
 	Id            int    `gorm:"column:id"`              // 主键
+	No            string `gorm:"column:no"`              // 用户编号
 	DeptId        int    `gorm:"column:dept_id"`         // 部门ID
 	PostId        int    `gorm:"column:post_id"`         // 岗位ID
 	Username      string `gorm:"column:username"`        // 用户账号
