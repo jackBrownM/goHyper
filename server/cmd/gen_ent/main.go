@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	tableName := "user"
+	tableName := "system_auth_admin"
 	// 初始化配置
 	config, err := base.NewConfig()
 	if err != nil {
