@@ -2,11 +2,9 @@ package controller
 
 import (
 	"github.com/google/wire"
-	"goHyper/internal/controller/admin"
-	"goHyper/internal/controller/example"
+	ctr_admin "goHyper/internal/controller/admin"
 )
 
 var ProvideSet = wire.NewSet(
-	example.NewExample,
-	admin.NewAdmin,
+	ctr_admin.NewSystem,
 )

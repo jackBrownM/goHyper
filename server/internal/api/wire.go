@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/google/wire"
+	route_admin "goHyper/internal/api/admin"
 )
 
 var ProvideSet = wire.NewSet(
-	NewExample,
-	NewAdmin,
+	route_admin.NewAdmin,
 )

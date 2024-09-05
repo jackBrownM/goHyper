@@ -3,10 +3,11 @@ package logic
 import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
+	"goHyper/core/consts"
 	"goHyper/core/svc/base"
-	"goHyper/internal/controller/admin/rsp"
+	req_admin "goHyper/internal/controller/admin/req"
+	rsp_admin "goHyper/internal/controller/admin/rsp"
 	"goHyper/internal/dao"
-	"goHyper/internal/infra/consts"
 	"goHyper/libs/errLib"
 	"goHyper/libs/jwtLib"
 	"goHyper/libs/md5Lib"
@@ -14,19 +15,19 @@ import (
 	"time"
 )
 
-type Admin struct {
+type System struct {
 	admin  *dao.Admin
 	config *base.Config
 }
 
-func NewAdmin(admin *dao.Admin, config *base.Config) *Admin {
-	return &Admin{
+func NewSystem(admin *dao.Admin, config *base.Config) *System {
+	return &System{
 		admin:  admin,
 		config: config,
 	}
 }
 
-func (l *Admin) Login(ctx *fiber.Ctx, userName, passWord, ip string) (*rsp.SystemLoginRsp, error) {
+func (l *System) Login(ctx *fiber.Ctx, userName, passWord, ip string) (*rsp_admin.SystemLoginRsp, error) {
 	sysAdmin, err := l.admin.GetByUserName(userName)
 	if err != nil {
 		return nil, errLib.AccountNotExist
@@ -67,11 +68,23 @@ func (l *Admin) Login(ctx *fiber.Ctx, userName, passWord, ip string) (*rsp.Syste
 	if err != nil {
 		return nil, err
 	}
-	return &rsp.SystemLoginRsp{
+	return &rsp_admin.SystemLoginRsp{
 		Token: jwtStr,
 	}, nil
 }
 
-func (l *Admin) Logout(ctx *fiber.Ctx) {
+func (l *System) Logout(ctx *fiber.Ctx) {
 	resLib.CookieRemove(ctx, consts.AdminTokenName)
+}
+
+func (l *System) Create(addReq req_admin.SystemAuthAdminAddReq) error {
+	// ===============================
+	// 前置判断
+	// ===============================
+	// 判断用户名或称昵是否存在
+	isExitAdmin := l.admin.IsExitAdmin(addReq.Username, addReq.Nickname)
+	if isExitAdmin {
+		return errLib.AccountExist
+	}
+	return nil
 }

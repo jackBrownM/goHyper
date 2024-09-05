@@ -5,36 +5,27 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/healthcheck"
 	"goHyper/core/svc/base"
-	"goHyper/internal/api"
+	route_admin "goHyper/internal/api/admin"
 )
 
 type Route struct {
-	cfg          *base.Config
-	logger       *base.Logger
-	exampleRoute *api.Example
-	adminRoute   *api.Admin
+	cfg        *base.Config
+	logger     *base.Logger
+	adminRoute *route_admin.Admin
 }
 
-func NewRoute(cfg *base.Config, logger *base.Logger, exampleRoute *api.Example, adminRoute *api.Admin,
+func NewRoute(cfg *base.Config, logger *base.Logger, adminRoute *route_admin.Admin,
 ) (*Route, error) {
 	logger.Info("路由初始化...")
 	return &Route{
-		cfg:          cfg,
-		logger:       logger,
-		exampleRoute: exampleRoute,
-		adminRoute:   adminRoute,
+		cfg:        cfg,
+		logger:     logger,
+		adminRoute: adminRoute,
 	}, nil
 }
 
 func (r *Route) Register(app *fiber.App) {
 	r.logger.Info("注册路由")
-	// ========================
-	// api路由组
-	// ========================
-	exampleGroup := app.Group("/example")
-	exampleGroup.Use(healthcheck.New())
-	// 路由模块
-	r.exampleRoute.Register(exampleGroup)
 	// ========================
 	// admin路由组
 	// ========================

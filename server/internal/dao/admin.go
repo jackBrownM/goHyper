@@ -35,3 +35,14 @@ func (d *Admin) LoginUpdate(ip string) (err error) {
 	err = d.db.Model(ent.SystemAuthAdmin{}).Updates(ent.SystemAuthAdmin{LastLoginIp: ip, LastLoginTime: int(time.Now().Unix())}).Error
 	return
 }
+
+// IsExitAdmin 通过用户名判断是否存在admin
+func (d *Admin) IsExitAdmin(userName string, nickName string) bool {
+	var count int64
+	d.db.Model(ent.SystemAuthAdmin{}).Where("username = ? or nickname = ? and is_delete <> 1", userName, nickName).Count(&count)
+	return count > 0
+}
+
+func (d *Admin) name() {
+
+}

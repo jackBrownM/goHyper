@@ -27,37 +27,22 @@ func (e Err) GetMsg() string {
 
 const NotFoundCode = 404
 const ServerErrorCode = 500
-const (
-	Success = iota
-	ErrorCode
-	UnknownCode
-	AccountNotExistCode
-	AccountLockedCode
-	AccountDisabledCode
-	PasswordErrorCode
-	TokenErrorCode
-	TokenExpiredCode
-	TokenInvalidCode
-	IpLockedCode
-	IpNotAllowCode
-	PermissionDeniedCode
-	ParamErrorCode
-)
 
 var (
 	NotFound         = NewErr(NotFoundCode, "404 Not found")
 	ServerError      = NewErr(ServerErrorCode, "500 Server error")
-	Error            = NewErr(ErrorCode, "Error")
-	Unknown          = NewErr(UnknownCode, "Unknown errLib")
-	AccountNotExist  = NewErr(AccountNotExistCode, "Account not exist")
-	AccountLocked    = NewErr(AccountLockedCode, "Account locked")
-	AccountDisabled  = NewErr(AccountDisabledCode, "Account disabled")
-	PasswordError    = NewErr(PasswordErrorCode, "Password errLib")
-	TokenError       = NewErr(TokenErrorCode, "Token errLib")
-	TokenExpired     = NewErr(TokenExpiredCode, "Token expired")
-	TokenInvalid     = NewErr(TokenInvalidCode, "Token invalid")
-	IpLocked         = NewErr(IpLockedCode, "Ip locked")
-	IpNotAllow       = NewErr(IpNotAllowCode, "Ip not allow")
-	PermissionDenied = NewErr(PermissionDeniedCode, "Permission denied")
-	ParamError       = NewErr(ParamErrorCode, "Param errLib")
+	Error            = NewErr(100001, "Error")
+	Unknown          = NewErr(100002, "Unknown errLib")
+	AccountNotExist  = NewErr(100003, "Account not exist")
+	AccountLocked    = NewErr(100004, "Account locked")
+	AccountDisabled  = NewErr(100005, "Account disabled")
+	PasswordError    = NewErr(100006, "Password errLib")
+	TokenError       = NewErr(100007, "Token errLib")
+	TokenExpired     = NewErr(100008, "Token expired")
+	TokenInvalid     = NewErr(100009, "Token invalid")
+	IpLocked         = NewErr(200001, "Ip locked")
+	IpNotAllow       = NewErr(200002, "Ip not allow")
+	PermissionDenied = NewErr(200003, "Permission denied")
+	ParamError       = NewErr(200004, "Param errLib")
+	AccountExist     = NewErr(200005, "Account is exist")
 )

@@ -10,9 +10,8 @@ import (
 	"goHyper/core/router"
 	"goHyper/core/svc"
 	"goHyper/core/svc/base"
-	"goHyper/internal/api"
+	"goHyper/internal/api/admin"
 	"goHyper/internal/controller/admin"
-	"goHyper/internal/controller/example"
 	"goHyper/internal/dao"
 	"goHyper/internal/logic"
 )
@@ -32,19 +31,15 @@ func InitializeSvc() (*svc.Init, error) {
 	if err != nil {
 		return nil, err
 	}
-	daoExample := dao.NewExample()
-	logicExample := logic.NewExample(daoExample)
-	exampleExample := example.NewExample(logicExample)
-	apiExample := api.NewExample(exampleExample)
 	db, err := base.NewMysql(config, logger)
 	if err != nil {
 		return nil, err
 	}
-	daoAdmin := dao.NewAdmin(db)
-	logicAdmin := logic.NewAdmin(daoAdmin)
-	adminAdmin := admin.NewAdmin(logicAdmin)
-	apiAdmin := api.NewAdmin(adminAdmin)
-	route, err := router.NewRoute(config, logger, apiExample, apiAdmin)
+	admin := dao.NewAdmin(db)
+	system := logic.NewSystem(admin, config)
+	ctr_adminSystem := ctr_admin.NewSystem(system)
+	route_adminAdmin := route_admin.NewAdmin(ctr_adminSystem)
+	route, err := router.NewRoute(config, logger, route_adminAdmin)
 	if err != nil {
 		return nil, err
 	}
