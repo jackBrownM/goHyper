@@ -22,6 +22,10 @@ func (d *Admin) Create(sysAdmin ent.SystemAuthAdmin) (err error) {
 	return
 }
 
+func (d *Admin) Update() {
+
+}
+
 // GetByUserName 根据账号查找管理员
 func (d *Admin) GetByUserName(userName string) (admin ent.SystemAuthAdmin, err error) {
 	err = d.db.Model(ent.SystemAuthAdmin{}).Where("username = ? and is_delete <> 1", userName).Limit(1).First(&admin).Error

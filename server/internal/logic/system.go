@@ -2,6 +2,7 @@ package logic
 
 import (
 	"github.com/dgrijalva/jwt-go"
+	"github.com/fatih/structs"
 	"github.com/gofiber/fiber/v2"
 	"goHyper/core/consts"
 	"goHyper/core/svc/base"
@@ -132,5 +133,44 @@ func (l *System) Update(editReq req_admin.SystemAuthAdminEditReq) error {
 	// ===============================
 	// 前置判断
 	// ===============================
+	// 判断用户名或称昵是否存在
+	isExitAdmin := l.admin.IsExitAdmin(editReq.Username, editReq.Nickname)
+	if isExitAdmin {
+		return errLib.AccountExist
+	}
+	// 检查role
+	if editReq.Role > 0 && editReq.ID != 1 {
+		_, err := l.role.Detail(editReq.Role)
+		if err != nil {
+			return err
+		}
+	}
+	// ===============================
+	// 整理数据
+	// ===============================
+	adminMap := structs.Map(editReq)
+	delete(adminMap, "ID")
+	role := editReq.Role
+	if editReq.ID == 1 {
+		role = 0
+	}
+	adminMap["Role"] = strconv.FormatUint(uint64(role), 10)
+	if editReq.ID == 1 {
+		delete(adminMap, "Username")
+	}
+	if editReq.Password != "" {
+		salt := utilLib.RandomString(5)
+		adminMap["Salt"] = salt
+		adminMap["Password"] = utilLib.MakeMd5(strings.Trim(editReq.Password, "") + salt)
+	} else {
+		delete(adminMap, "Password")
+	}
+	// ===============================
+	// 创建数据
+	// ===============================
+	err := l.admin.Update(adminMap)
+	if err != nil {
+		return err
+	}
 	return nil
 }
