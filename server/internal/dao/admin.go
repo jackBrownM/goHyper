@@ -17,8 +17,9 @@ func NewAdmin(db *base.Mysql) *Admin {
 	return &Admin{db: db}
 }
 
-func (d *Admin) GetUser() string {
-	return "user:xxxxxx"
+func (d *Admin) Create(sysAdmin ent.SystemAuthAdmin) (err error) {
+	err = d.db.Create(&sysAdmin).Error
+	return
 }
 
 // GetByUserName 根据账号查找管理员
@@ -43,6 +44,9 @@ func (d *Admin) IsExitAdmin(userName string, nickName string) bool {
 	return count > 0
 }
 
-func (d *Admin) name() {
-
+// GetMemberCnt 根据角色ID获取成员数量
+func (d *Admin) GetMemberCnt(roleId int) (count int64) {
+	d.db.Model(&ent.SystemAuthAdmin{}).Where(
+		"role = ? AND is_delete = ?", roleId, 0).Count(&count)
+	return
 }

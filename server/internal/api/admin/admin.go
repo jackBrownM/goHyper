@@ -22,6 +22,7 @@ func (r *Admin) Register(root fiber.Router) {
 	}
 	// 管理员
 	{
-		adminGroup.Post("/admin/add", r.system.Create)
+		adminGroup.Post("/admin/add", r.system.Create).Name("管理员创建")
+		adminGroup.Post("/admin/edit", r.system.Update).Name("管理员编辑")
 	}
 }

@@ -25,6 +25,11 @@ func (e Err) GetMsg() string {
 	return e.Message
 }
 
+// Prefix 添加错误前缀信息
+func (e *Err) Prefix(prefix string) *Err {
+	return &Err{e.Code, prefix + e.Message}
+}
+
 const NotFoundCode = 404
 const ServerErrorCode = 500
 

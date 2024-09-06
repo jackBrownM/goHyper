@@ -8,21 +8,28 @@ import (
 	req_admin "goHyper/internal/controller/admin/req"
 	rsp_admin "goHyper/internal/controller/admin/rsp"
 	"goHyper/internal/dao"
+	"goHyper/internal/ent"
 	"goHyper/libs/errLib"
 	"goHyper/libs/jwtLib"
 	"goHyper/libs/md5Lib"
 	"goHyper/libs/resLib"
+	"goHyper/libs/utilLib"
+	"strconv"
+	"strings"
 	"time"
 )
 
 type System struct {
+	perm   *dao.Perm
 	admin  *dao.Admin
+	role   *dao.Role
 	config *base.Config
 }
 
-func NewSystem(admin *dao.Admin, config *base.Config) *System {
+func NewSystem(admin *dao.Admin, role *dao.Role, config *base.Config) *System {
 	return &System{
 		admin:  admin,
+		role:   role,
 		config: config,
 	}
 }
@@ -78,6 +85,7 @@ func (l *System) Logout(ctx *fiber.Ctx) {
 }
 
 func (l *System) Create(addReq req_admin.SystemAuthAdminAddReq) error {
+	var sysAdmin ent.SystemAuthAdmin
 	// ===============================
 	// 前置判断
 	// ===============================
@@ -86,5 +94,43 @@ func (l *System) Create(addReq req_admin.SystemAuthAdminAddReq) error {
 	if isExitAdmin {
 		return errLib.AccountExist
 	}
+	// ===============================
+	// 整理数据
+	// ===============================
+	roleRsp, err := l.role.Detail(addReq.Role)
+	if err != nil {
+		return err
+	}
+	roleRsp.Member = l.admin.GetMemberCnt(addReq.Role)
+	roleRsp.Menus, err = l.perm.SelectMenuIdsByRoleId(addReq.Role)
+	if err != nil {
+		return err
+	}
+	if roleRsp.IsDisable > 0 {
+		return errLib.AccountDisabled
+	}
+	salt := utilLib.RandomString(5)
+	resLib.Copy(&sysAdmin, addReq)
+	sysAdmin.Role = strconv.FormatInt(int64(addReq.Role), 10)
+	sysAdmin.Salt = salt
+	sysAdmin.Password = utilLib.MakeMd5(strings.Trim(addReq.Password, " ") + salt)
+	if addReq.Avatar == "" {
+		addReq.Avatar = "/api/static/backend_avatar.png"
+	}
+	sysAdmin.Avatar = ""
+	// ===============================
+	// 创建数据
+	// ===============================
+	err = l.admin.Create(sysAdmin)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (l *System) Update(editReq req_admin.SystemAuthAdminEditReq) error {
+	// ===============================
+	// 前置判断
+	// ===============================
 	return nil
 }

@@ -42,6 +42,21 @@ func (c *System) Create(ctx *fiber.Ctx) error {
 	if err := httpLib.CheckDTO(ctx, &addReq); err != nil {
 		return err
 	}
-	c.system.Create(addReq)
+	err := c.system.Create(addReq)
+	if err != nil {
+		return err
+	}
+	return resLib.Ok(ctx)
+}
+
+func (c *System) Update(ctx *fiber.Ctx) error {
+	var editReq req_admin.SystemAuthAdminEditReq
+	if err := httpLib.CheckDTO(ctx, &editReq); err != nil {
+		return err
+	}
+	err := c.system.Update(editReq)
+	if err != nil {
+		return err
+	}
 	return resLib.Ok(ctx)
 }

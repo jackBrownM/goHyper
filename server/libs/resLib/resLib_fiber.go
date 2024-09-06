@@ -2,6 +2,7 @@ package resLib
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/jinzhu/copier"
 	"goHyper/libs/errLib"
 )
 
@@ -58,4 +59,12 @@ func CookieAdd(ctx *fiber.Ctx, cookieName string, cookieValue string, maxAge int
 		Secure:   false,
 		HTTPOnly: true,
 	})
+}
+
+// Copy 拷贝结构体
+func Copy(toValue interface{}, fromValue interface{}) interface{} {
+	if err := copier.Copy(toValue, fromValue); err != nil {
+		panic(err)
+	}
+	return toValue
 }
