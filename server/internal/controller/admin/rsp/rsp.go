@@ -7,27 +7,27 @@ type SystemLoginRsp struct {
 
 // SystemAuthRoleRsp 系统角色返回信息
 type SystemAuthRoleRsp struct {
-	ID         uint   `json:"id" structs:"id"`                 // 主键
+	ID         int    `json:"id" structs:"id"`                 // 主键
 	Name       string `json:"name" structs:"name"`             // 角色名称
 	Remark     string `json:"remark" structs:"remark"`         // 角色备注
 	Menus      []int  `json:"menus" structs:"menus"`           // 关联菜单
 	Member     int64  `json:"member" structs:"member"`         // 成员数量
-	Sort       uint16 `json:"sort" structs:"sort"`             // 角色排序
-	IsDisable  uint8  `json:"isDisable" structs:"isDisable"`   // 是否禁用: [0=否, 1=是]
+	Sort       int16  `json:"sort" structs:"sort"`             // 角色排序
+	IsDisable  int8   `json:"isDisable" structs:"isDisable"`   // 是否禁用: [0=否, 1=是]
 	CreateTime int    `json:"createTime" structs:"createTime"` // 创建时间
 	UpdateTime int    `json:"updateTime" structs:"updateTime"` // 更新时间
 }
 
 // SystemAuthAdminSelfOneRsp 当前管理员返回部分信息
 type SystemAuthAdminSelfOneRsp struct {
-	ID            uint   `json:"id" structs:"id"`                       // 主键
+	ID            int    `json:"id" structs:"id"`                       // 主键
 	Username      string `json:"username" structs:"username"`           // 账号
 	Nickname      string `json:"nickname" structs:"nickname"`           // 昵称
 	Avatar        string `json:"avatar" structs:"avatar"`               // 头像
 	Role          string `json:"role" structs:"role"`                   // 角色
 	Dept          string `json:"dept" structs:"dept"`                   // 部门
-	IsMultipoint  uint8  `json:"isMultipoint" structs:"isMultipoint"`   // 多端登录: [0=否, 1=是]
-	IsDisable     uint8  `json:"isDisable" structs:"isDisable"`         // 是否禁用: [0=否, 1=是]
+	IsMultipoint  int8   `json:"isMultipoint" structs:"isMultipoint"`   // 多端登录: [0=否, 1=是]
+	IsDisable     int8   `json:"isDisable" structs:"isDisable"`         // 是否禁用: [0=否, 1=是]
 	LastLoginIp   string `json:"lastLoginIp" structs:"lastLoginIp"`     // 最后登录IP
 	LastLoginTime int    `json:"lastLoginTime" structs:"lastLoginTime"` // 最后登录时间
 	CreateTime    int    `json:"createTime" structs:"createTime"`       // 创建时间
@@ -50,7 +50,7 @@ type PageRsp struct {
 
 // SystemAuthAdminRsp 管理员返回信息
 type SystemAuthAdminRsp struct {
-	ID            uint   `json:"id" structs:"id"`                       // 主键
+	ID            int    `json:"id" structs:"id"`                       // 主键
 	Username      string `json:"username" structs:"username"`           // 账号
 	Nickname      string `json:"nickname" structs:"nickname"`           // 昵称
 	Avatar        string `json:"avatar" structs:"avatar"`               // 头像
@@ -64,4 +64,12 @@ type SystemAuthAdminRsp struct {
 	LastLoginTime int    `json:"lastLoginTime" structs:"lastLoginTime"` // 最后登录时间
 	CreateTime    int    `json:"createTime" structs:"createTime"`       // 创建时间
 	UpdateTime    int    `json:"updateTime" structs:"updateTime"`       // 更新时间
+}
+
+// SystemAuthRoleSimpleRsp 系统角色返回简单信息
+type SystemAuthRoleSimpleRsp struct {
+	ID         int    `json:"id" structs:"id"`                 // 主键
+	Name       string `json:"name" structs:"name"`             // 角色名称
+	CreateTime int    `json:"createTime" structs:"createTime"` // 创建时间
+	UpdateTime int    `json:"updateTime" structs:"updateTime"` // 更新时间
 }

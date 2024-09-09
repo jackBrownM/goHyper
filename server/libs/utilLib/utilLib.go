@@ -3,7 +3,9 @@ package utilLib
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"github.com/google/uuid"
 	"math/rand"
+	"strings"
 )
 
 var (
@@ -22,4 +24,9 @@ func RandomString(length int) string {
 func MakeMd5(data string) string {
 	sum := md5.Sum([]byte(data))
 	return hex.EncodeToString(sum[:])
+}
+
+// MakeUuid 制作UUID
+func MakeUuid() string {
+	return strings.ReplaceAll(uuid.New().String(), "-", "")
 }

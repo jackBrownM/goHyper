@@ -19,7 +19,7 @@ import (
 	"time"
 )
 
-type System struct {
+type Admin struct {
 	menu   *dao.Menu
 	perm   *dao.Perm
 	admin  *dao.Admin
@@ -27,15 +27,15 @@ type System struct {
 	config *base.Config
 }
 
-func NewSystem(admin *dao.Admin, role *dao.Role, config *base.Config) *System {
-	return &System{
+func NewAdmin(admin *dao.Admin, role *dao.Role, config *base.Config) *Admin {
+	return &Admin{
 		admin:  admin,
 		role:   role,
 		config: config,
 	}
 }
 
-func (l *System) Login(ctx *fiber.Ctx, userName, passWord, ip string) (*rsp_admin.SystemLoginRsp, error) {
+func (l *Admin) Login(ctx *fiber.Ctx, userName, passWord, ip string) (*rsp_admin.SystemLoginRsp, error) {
 	sysAdmin, err := l.admin.GetByUserName(userName)
 	if err != nil {
 		return nil, errLib.AccountNotExist
@@ -81,11 +81,11 @@ func (l *System) Login(ctx *fiber.Ctx, userName, passWord, ip string) (*rsp_admi
 	}, nil
 }
 
-func (l *System) Logout(ctx *fiber.Ctx) {
+func (l *Admin) Logout(ctx *fiber.Ctx) {
 	resLib.CookieRemove(ctx, consts.AdminTokenName)
 }
 
-func (l *System) Detail(id int) (rsp *rsp_admin.SystemAuthAdminRsp, err error) {
+func (l *Admin) Detail(id int) (rsp *rsp_admin.SystemAuthAdminRsp, err error) {
 	systemAdmin, err := l.admin.GetById(id)
 	if err != nil {
 		return
@@ -97,11 +97,11 @@ func (l *System) Detail(id int) (rsp *rsp_admin.SystemAuthAdminRsp, err error) {
 	return
 }
 
-func (l *System) List(page req_admin.PageReq, listReq req_admin.SystemAuthAdminListReq) (*rsp_admin.PageRsp, error) {
+func (l *Admin) List(page req_admin.PageReq, listReq req_admin.SystemAuthAdminListReq) (*rsp_admin.PageRsp, error) {
 	return l.admin.List(page, listReq)
 }
 
-func (l *System) Self(adminId int) (any, error) {
+func (l *Admin) Self(adminId int) (any, error) {
 	// ===============================
 	// 数据处理
 	// ===============================
@@ -142,7 +142,7 @@ func (l *System) Self(adminId int) (any, error) {
 	return rsp_admin.SystemAuthAdminSelfRsp{User: admin, Permissions: auths}, nil
 }
 
-func (l *System) Create(addReq req_admin.SystemAuthAdminAddReq) error {
+func (l *Admin) Create(addReq req_admin.SystemAuthAdminAddReq) error {
 	var sysAdmin ent.SystemAuthAdmin
 	// ===============================
 	// 前置判断
@@ -186,7 +186,7 @@ func (l *System) Create(addReq req_admin.SystemAuthAdminAddReq) error {
 	return nil
 }
 
-func (l *System) Update(editReq req_admin.SystemAuthAdminEditReq) error {
+func (l *Admin) Update(editReq req_admin.SystemAuthAdminEditReq) error {
 	// ===============================
 	// 前置判断
 	// ===============================
@@ -227,7 +227,7 @@ func (l *System) Update(editReq req_admin.SystemAuthAdminEditReq) error {
 	return nil
 }
 
-func (l *System) UpInfo(id int, updateInfo req_admin.SystemAuthAdminUpdateReq) error {
+func (l *Admin) UpInfo(id int, updateInfo req_admin.SystemAuthAdminUpdateReq) error {
 	// ===============================
 	// 前置判断
 	// ===============================
@@ -259,7 +259,7 @@ func (l *System) UpInfo(id int, updateInfo req_admin.SystemAuthAdminUpdateReq) e
 	return nil
 }
 
-func (l *System) Delete(id, adminId int) error {
+func (l *Admin) Delete(id, adminId int) error {
 	// ===============================
 	// 前置判断
 	// ===============================
@@ -289,7 +289,7 @@ func (l *System) Delete(id, adminId int) error {
 	return nil
 }
 
-func (l *System) Disable(id, adminId int) error {
+func (l *Admin) Disable(id, adminId int) error {
 	// ===============================
 	// 前置判断
 	// ===============================

@@ -6,11 +6,12 @@ import (
 )
 
 type Admin struct {
-	system *ctr_admin.System
+	system *ctr_admin.Admin
+	role   *ctr_admin.Role
 }
 
-func NewAdmin(system *ctr_admin.System) *Admin {
-	return &Admin{system: system}
+func NewAdmin(system *ctr_admin.Admin, role *ctr_admin.Role) *Admin {
+	return &Admin{system: system, role: role}
 }
 
 func (r *Admin) Register(root fiber.Router) {
@@ -31,4 +32,14 @@ func (r *Admin) Register(root fiber.Router) {
 		adminGroup.Get("/admin/delete", r.system.Delete).Name("管理员删除")
 		adminGroup.Get("/admin/disable", r.system.Disable).Name("管理员状态切换")
 	}
+	// 角色
+	{
+		adminGroup.Get("/role/all", r.role.All).Name("获取所有角色")
+		adminGroup.Get("/role/list", r.role.List).Name("角色列表")
+		adminGroup.Get("/role/detail", r.role.Detail).Name("角色详情")
+		adminGroup.Post("/role/add", r.role.Create).Name("角色创建")
+		adminGroup.Post("/role/edit", r.role.Update).Name("角色更新")
+		adminGroup.Get("/role/delete", r.role.Delete).Name("角色删除")
+	}
+
 }

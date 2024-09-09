@@ -56,4 +56,7 @@ var (
 	SystemAdminCannotDelete = NewErr(200009, "System admin cannot delete")
 	CannotDeleteMySelf      = NewErr(200010, "Cannot delete my self")
 	CannotDisableMySelf     = NewErr(200011, "Cannot disable my self")
+	RoleNameExist           = NewErr(200012, "Role name exist")
+	RoleNotExist            = NewErr(200013, "Role  not exist")
+	RoleUsed                = NewErr(200014, "Role is used")
 )

@@ -37,9 +37,12 @@ func InitializeSvc() (*svc.Init, error) {
 	}
 	admin := dao.NewAdmin(db)
 	role := dao.NewRole(db)
-	system := logic.NewSystem(admin, role, config)
-	ctr_adminSystem := ctr_admin.NewSystem(system)
-	route_adminAdmin := route_admin.NewAdmin(ctr_adminSystem)
+	logicAdmin := logic.NewAdmin(admin, role, config)
+	ctr_adminAdmin := ctr_admin.NewSystem(logicAdmin)
+	perm := dao.NewPerm(db)
+	logicRole := logic.NewRole(perm, admin, role, config)
+	ctr_adminRole := ctr_admin.NewRole(logicRole)
+	route_adminAdmin := route_admin.NewAdmin(ctr_adminAdmin, ctr_adminRole)
 	route, err := router.NewRoute(config, logger, route_adminAdmin)
 	if err != nil {
 		return nil, err
