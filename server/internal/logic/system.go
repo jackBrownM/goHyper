@@ -2,7 +2,6 @@ package logic
 
 import (
 	"github.com/dgrijalva/jwt-go"
-	"github.com/fatih/structs"
 	"github.com/gofiber/fiber/v2"
 	"goHyper/core/consts"
 	"goHyper/core/svc/base"
@@ -21,6 +20,7 @@ import (
 )
 
 type System struct {
+	menu   *dao.Menu
 	perm   *dao.Perm
 	admin  *dao.Admin
 	role   *dao.Role
@@ -83,6 +83,63 @@ func (l *System) Login(ctx *fiber.Ctx, userName, passWord, ip string) (*rsp_admi
 
 func (l *System) Logout(ctx *fiber.Ctx) {
 	resLib.CookieRemove(ctx, consts.AdminTokenName)
+}
+
+func (l *System) Detail(id int) (rsp *rsp_admin.SystemAuthAdminRsp, err error) {
+	systemAdmin, err := l.admin.GetById(id)
+	if err != nil {
+		return
+	}
+	if rsp.Dept == "" {
+		rsp.Dept = strconv.FormatInt(int64(rsp.DeptId), 10)
+	}
+	resLib.Copy(rsp, systemAdmin)
+	return
+}
+
+func (l *System) List(page req_admin.PageReq, listReq req_admin.SystemAuthAdminListReq) (*rsp_admin.PageRsp, error) {
+	return l.admin.List(page, listReq)
+}
+
+func (l *System) Self(adminId int) (any, error) {
+	// ===============================
+	// 数据处理
+	// ===============================
+	// 管理员信息
+	sysAdmin, err := l.admin.GetById(adminId)
+	if err != nil {
+		return nil, err
+	}
+	// 角色权限
+	var auths []string
+	if adminId > 1 {
+		roleId, _ := strconv.Atoi(sysAdmin.Role)
+		menuIds, err := l.perm.SelectMenuIdsByRoleId(roleId)
+		if err != nil {
+			return nil, err
+		}
+		if len(menuIds) > 0 {
+			var menus []ent.SystemAuthMenu
+			menus, err = l.menu.GetListByRoleId(menuIds)
+			if err != nil {
+				return nil, err
+			}
+			if len(menus) > 0 {
+				for _, v := range menus {
+					auths = append(auths, strings.Trim(v.Perms, " "))
+				}
+			}
+		}
+		if len(auths) > 0 {
+			auths = append(auths, "")
+		}
+	} else {
+		auths = append(auths, "*")
+	}
+	var admin rsp_admin.SystemAuthAdminSelfOneRsp
+	resLib.Copy(&admin, sysAdmin)
+	admin.Dept = strconv.FormatInt(int64(sysAdmin.DeptId), 10)
+	return rsp_admin.SystemAuthAdminSelfRsp{User: admin, Permissions: auths}, nil
 }
 
 func (l *System) Create(addReq req_admin.SystemAuthAdminAddReq) error {
@@ -148,27 +205,114 @@ func (l *System) Update(editReq req_admin.SystemAuthAdminEditReq) error {
 	// ===============================
 	// 整理数据
 	// ===============================
-	adminMap := structs.Map(editReq)
-	delete(adminMap, "ID")
+	var sysAdmin ent.SystemAuthAdmin
+	resLib.Copy(&sysAdmin, editReq)
 	role := editReq.Role
 	if editReq.ID == 1 {
 		role = 0
 	}
-	adminMap["Role"] = strconv.FormatUint(uint64(role), 10)
-	if editReq.ID == 1 {
-		delete(adminMap, "Username")
-	}
+	sysAdmin.Role = strconv.FormatUint(uint64(role), 10)
 	if editReq.Password != "" {
 		salt := utilLib.RandomString(5)
-		adminMap["Salt"] = salt
-		adminMap["Password"] = utilLib.MakeMd5(strings.Trim(editReq.Password, "") + salt)
-	} else {
-		delete(adminMap, "Password")
+		sysAdmin.Salt = salt
+		sysAdmin.Password = utilLib.MakeMd5(strings.Trim(editReq.Password, "") + salt)
 	}
 	// ===============================
-	// 创建数据
+	// 更新数据
 	// ===============================
-	err := l.admin.Update(adminMap)
+	err := l.admin.Update(sysAdmin)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (l *System) UpInfo(id int, updateInfo req_admin.SystemAuthAdminUpdateReq) error {
+	// ===============================
+	// 前置判断
+	// ===============================
+	// 检查id
+	admin, err := l.admin.GetById(id)
+	if err != nil {
+		return err
+	}
+	if admin == nil {
+		return errLib.AccountNotExist
+	}
+	// ===============================
+	// 数据处理
+	// ===============================
+	var sysAdmin ent.SystemAuthAdmin
+	resLib.Copy(&sysAdmin, updateInfo)
+	if updateInfo.Password != "" {
+		salt := utilLib.RandomString(5)
+		sysAdmin.Salt = salt
+		sysAdmin.Password = utilLib.MakeMd5(strings.Trim(updateInfo.Password, "") + salt)
+	}
+	// ===============================
+	// 更新数据
+	// ===============================
+	err = l.admin.Update(sysAdmin)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (l *System) Delete(id, adminId int) error {
+	// ===============================
+	// 前置判断
+	// ===============================
+	// 检查id
+	admin, err := l.admin.GetById(id)
+	if err != nil {
+		return err
+	}
+	if admin == nil {
+		return errLib.AccountNotExist
+	}
+	// 系统管理员不能删除
+	if id == 1 {
+		return errLib.SystemAdminCannotDelete
+	}
+	// 不能删除自己
+	if id == adminId {
+		return errLib.CannotDeleteMySelf
+	}
+	// ===============================
+	// 更新数据
+	// ===============================
+	err = l.admin.Delete(id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (l *System) Disable(id, adminId int) error {
+	// ===============================
+	// 前置判断
+	// ===============================
+	// 检查id
+	admin, err := l.admin.GetById(id)
+	if err != nil {
+		return err
+	}
+	if admin == nil {
+		return errLib.AccountNotExist
+	}
+	// 不能禁用自己
+	if id == adminId {
+		return errLib.CannotDisableMySelf
+	}
+	var isDisable int
+	if admin.IsDisable == 0 {
+		isDisable = 1
+	}
+	// ===============================
+	// 更新数据
+	// ===============================
+	err = l.admin.Disable(id, isDisable)
 	if err != nil {
 		return err
 	}
