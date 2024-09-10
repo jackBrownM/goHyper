@@ -8,4 +8,5 @@ import (
 var ProvideSet = wire.NewSet(
 	ctr_admin.NewSystem,
 	ctr_admin.NewRole,
+	ctr_admin.NewMenu,
 )

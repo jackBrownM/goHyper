@@ -8,10 +8,11 @@ import (
 type Admin struct {
 	system *ctr_admin.Admin
 	role   *ctr_admin.Role
+	menu   *ctr_admin.Menu
 }
 
-func NewAdmin(system *ctr_admin.Admin, role *ctr_admin.Role) *Admin {
-	return &Admin{system: system, role: role}
+func NewAdmin(system *ctr_admin.Admin, role *ctr_admin.Role, menu *ctr_admin.Menu) *Admin {
+	return &Admin{system: system, role: role, menu: menu}
 }
 
 func (r *Admin) Register(root fiber.Router) {
@@ -40,6 +41,15 @@ func (r *Admin) Register(root fiber.Router) {
 		adminGroup.Post("/role/add", r.role.Create).Name("角色创建")
 		adminGroup.Post("/role/edit", r.role.Update).Name("角色更新")
 		adminGroup.Get("/role/delete", r.role.Delete).Name("角色删除")
+	}
+	// 菜单
+	{
+		adminGroup.Get("/menu/route", r.menu.Route).Name("菜单路由")
+		adminGroup.Get("/menu/list", r.menu.List).Name("菜单列表")
+		adminGroup.Get("/menu/detail", r.menu.Detail).Name("菜单详情")
+		adminGroup.Post("/menu/add", r.menu.Create).Name("菜单创建")
+		adminGroup.Post("/menu/edit", r.menu.Update).Name("菜单更新")
+		adminGroup.Get("/menu/delete", r.menu.Delete).Name("菜单删除")
 	}
 
 }

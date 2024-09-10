@@ -73,3 +73,24 @@ type SystemAuthRoleSimpleRsp struct {
 	CreateTime int    `json:"createTime" structs:"createTime"` // 创建时间
 	UpdateTime int    `json:"updateTime" structs:"updateTime"` // 更新时间
 }
+
+// SystemAuthMenuRsp 系统菜单返回信息
+type SystemAuthMenuRsp struct {
+	ID         int                 `json:"id" structs:"id"`                       // 主键
+	Pid        int                 `json:"pid" structs:"pid"`                     // 上级菜单
+	MenuType   string              `json:"menuType" structs:"menuType"`           // 权限类型: [M=目录, C=菜单, A=按钮]
+	MenuName   string              `json:"menuName" structs:"menuName"`           // 菜单名称
+	MenuIcon   string              `json:"menuIcon" structs:"menuIcon"`           // 菜单图标
+	MenuSort   uint16              `json:"menuSort" structs:"menuSort"`           // 菜单排序
+	Perms      string              `json:"perms" structs:"perms"`                 // 权限标识
+	Paths      string              `json:"paths" structs:"paths"`                 // 路由地址
+	Component  string              `json:"component" structs:"component"`         // 前端组件
+	Selected   string              `json:"selected" structs:"selected"`           // 选中路径
+	Params     string              `json:"params" structs:"params"`               // 路由参数
+	IsCache    int8                `json:"isCache" structs:"isCache"`             // 是否缓存: [0=否, 1=是]
+	IsShow     int8                `json:"isShow" structs:"isShow"`               // 是否显示: [0=否, 1=是]
+	IsDisable  int8                `json:"isDisable" structs:"isDisable"`         // 是否禁用: [0=否, 1=是]
+	CreateTime int                 `json:"createTime" structs:"createTime"`       // 创建时间
+	UpdateTime int                 `json:"updateTime" structs:"updateTime"`       // 更新时间
+	Children   []SystemAuthMenuRsp `json:"children,omitempty" structs:"children"` // 子集
+}
