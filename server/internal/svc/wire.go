@@ -3,14 +3,14 @@ package svc
 import (
 	"github.com/google/wire"
 	"goHyper/core/router"
-	"goHyper/core/svc/base"
+	base2 "goHyper/internal/svc/base"
 )
 
 var ProvideSet = wire.NewSet(
-	base.NewConfig,
-	base.NewLogger,
+	base2.NewConfig,
+	base2.NewLogger,
 	NewHttpServ,
-	base.NewRedis,
-	base.NewMysql,
+	base2.NewRedis,
+	base2.NewMysql,
 	router.NewRoute,
 )

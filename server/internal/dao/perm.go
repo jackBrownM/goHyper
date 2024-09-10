@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"goHyper/core/svc/base"
 	"goHyper/internal/ent"
+	"goHyper/internal/svc/base"
 	"goHyper/libs/utilLib"
 	"gorm.io/gorm"
 	"strconv"

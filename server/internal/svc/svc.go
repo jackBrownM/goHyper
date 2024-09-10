@@ -2,7 +2,7 @@ package svc
 
 import (
 	"goHyper/core/router"
-	"goHyper/core/svc/base"
+	"goHyper/internal/svc/base"
 	"goHyper/libs/fiberLib"
 )
 

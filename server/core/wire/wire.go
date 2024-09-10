@@ -7,21 +7,21 @@ package wire
 
 import (
 	"github.com/google/wire"
-	"goHyper/core/svc"
 	"goHyper/internal/api"
 	"goHyper/internal/controller"
 	"goHyper/internal/dao"
 	"goHyper/internal/logic"
+	svc2 "goHyper/internal/svc"
 )
 
-func InitializeSvc() (*svc.Init, error) {
+func InitializeSvc() (*svc2.Init, error) {
 	wire.Build(
-		svc.NewInit,
-		svc.ProvideSet,
+		svc2.NewInit,
+		svc2.ProvideSet,
 		dao.ProvideSet,
 		logic.ProvideSet,
 		controller.ProvideSet,
 		api.ProvideSet,
 	)
-	return &svc.Init{}, nil
+	return &svc2.Init{}, nil
 }

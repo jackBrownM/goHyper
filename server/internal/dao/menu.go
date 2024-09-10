@@ -2,8 +2,8 @@ package dao
 
 import (
 	"github.com/fatih/structs"
-	"goHyper/core/svc/base"
 	"goHyper/internal/ent"
+	"goHyper/internal/svc/base"
 )
 
 type Menu struct {

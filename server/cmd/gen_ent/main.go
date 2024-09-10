@@ -3,7 +3,7 @@ package main
 import (
 	"go/format"
 	"goHyper/cmd/gen_ent/gen"
-	"goHyper/core/svc/base"
+	"goHyper/internal/svc/base"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"

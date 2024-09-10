@@ -1,10 +1,10 @@
 package dao
 
 import (
-	"goHyper/core/svc/base"
 	req_admin "goHyper/internal/controller/admin/req"
 	rsp_admin "goHyper/internal/controller/admin/rsp"
 	"goHyper/internal/ent"
+	"goHyper/internal/svc/base"
 	"goHyper/libs/errLib"
 	"goHyper/libs/resLib"
 	"gorm.io/gorm"
