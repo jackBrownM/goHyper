@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/gofiber/fiber/v2"
 	"goHyper/core/consts"
 	"goHyper/core/middleware/admin_ctx"
@@ -10,14 +9,12 @@ import (
 	"goHyper/libs/jwtLib"
 )
 
-func AdminAuthN(config *base.Jwt) gin.HandlerFunc {
+func AdminAuthN(config *base.Jwt) func(gc *fiber.Ctx) {
 	return func(gc *fiber.Ctx) {
 		var jwtString string
-		if cookieValue, err := gc.Cookie(consts.AdminTokenName); err == nil {
-			jwtString = cookieValue
-		} else if headValue := gc.GetHeader(consts.AdminTokenName); headValue != "" {
-			jwtString = headValue
-		}
+		cookieValue := gc.Cookies(consts.AdminTokenName)
+		jwtString = cookieValue
+
 		adminJwt, err := jwtLib.DecodeAdminJwt(config.JwtSignKey, config.JwtAesKey, jwtString)
 		if err == nil {
 			claims := adminJwt.Claims()
