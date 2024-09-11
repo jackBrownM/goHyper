@@ -6,6 +6,21 @@ import (
 	"goHyper/libs/errLib"
 )
 
+func OkTest(ctx *fiber.Ctx, data ...any) error {
+	if len(data) == 0 {
+		return ctx.JSON(Rsp{
+			Code: 0,
+			Msg:  "success",
+			Data: nil,
+		})
+	}
+	return ctx.JSON(Rsp{
+		Code: 0,
+		Msg:  "success",
+		Data: data,
+	})
+}
+
 func Ok(ctx *fiber.Ctx, data ...any) error {
 	if len(data) == 0 {
 		return ctx.JSON(Rsp{

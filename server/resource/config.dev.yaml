@@ -1,0 +1,15 @@
+Svc:
+  Name: goHyper
+  Host: 0.0.0.0
+  Port: 8089
+  Mode: dev
+MySQL:
+  Conn: "gohyper:123456@tcp(127.0.0.1:3306)/gohyper?charset=utf8mb4&parseTime=True&loc=Local"
+Redis:
+  Host: 127.0.0.1
+  Port: 6379
+  DBNO: 0
+  Password:
+Admin:
+  JwtSignKey: pfy7mw0ig3x9uok1
+  JwtAesKey: o526pgqabtiz78vf

@@ -40,8 +40,8 @@ func (d *Admin) GetByUserName(userName string) (admin ent.SystemAuthAdmin, err e
 }
 
 // LoginUpdate 登录更新
-func (d *Admin) LoginUpdate(ip string) (err error) {
-	err = d.db.Model(ent.SystemAuthAdmin{}).Updates(ent.SystemAuthAdmin{LastLoginIp: ip, LastLoginTime: int(time.Now().Unix())}).Error
+func (d *Admin) LoginUpdate(adminId int, ip string) (err error) {
+	err = d.db.Model(ent.SystemAuthAdmin{}).Where("id = ?", adminId).Updates(ent.SystemAuthAdmin{LastLoginIp: ip, LastLoginTime: int(time.Now().Unix())}).Error
 	return
 }
 

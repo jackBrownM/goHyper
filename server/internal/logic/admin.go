@@ -62,7 +62,7 @@ func (l *Admin) Login(ctx *fiber.Ctx, userName, passWord, ip string) (*rsp_admin
 			IssuedAt:  nowTime.Unix(),
 			ExpiresAt: expiredTime.Unix(),
 		},
-		No: sysAdmin.No,
+		Id: sysAdmin.Id,
 	}
 	jwtObj := jwtLib.NewUserJwt(l.config.Admin.JwtSignKey, l.config.Admin.JwtAesKey, &claims)
 	jwtStr, err := jwtObj.Encode()
@@ -72,7 +72,7 @@ func (l *Admin) Login(ctx *fiber.Ctx, userName, passWord, ip string) (*rsp_admin
 	// 存cookie
 	resLib.CookieAdd(ctx, consts.AdminTokenName, jwtStr, consts.MaxAge)
 	// 更新登录信息
-	err = l.admin.LoginUpdate(ip)
+	err = l.admin.LoginUpdate(sysAdmin.Id, ip)
 	if err != nil {
 		return nil, err
 	}

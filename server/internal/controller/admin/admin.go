@@ -19,7 +19,7 @@ func NewSystem(admin *logic.Admin) *Admin {
 	}
 }
 
-// 登录
+// Login 登录
 func (c *Admin) Login(ctx *fiber.Ctx) error {
 	var req req_admin.SystemLoginReq
 	if err := httpLib.CheckDTO(ctx, &req); err != nil {
@@ -31,7 +31,11 @@ func (c *Admin) Login(ctx *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-	return resLib.Ok(ctx, token)
+	return ctx.JSON(map[string]interface{}{
+		"code": 200,
+		"msg":  "成功",
+		"data": token,
+	})
 }
 
 func (c *Admin) Logout(ctx *fiber.Ctx) error {

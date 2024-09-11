@@ -4,7 +4,7 @@ import "github.com/dgrijalva/jwt-go"
 
 type UserClaims struct {
 	jwt.StandardClaims
-	No string
+	Id int
 }
 
 func (a UserClaims) Valid() error {
