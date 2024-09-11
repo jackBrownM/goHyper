@@ -15,6 +15,7 @@ func GetAdminId(ctx *fiber.Ctx) int {
 	}
 	return id
 }
+
 func SetAdminId(ctx *fiber.Ctx, id int) {
 	ctx.Set("AdminId", strconv.Itoa(id))
 }
@@ -28,6 +29,7 @@ func GetAdmin(ctx *gin.Context) *ent.SystemAuthAdmin {
 	}
 	return nil
 }
+
 func SetAdmin(ctx *gin.Context, member *ent.SystemAuthAdmin) {
 	ctx.Set("Admin", member)
 }
