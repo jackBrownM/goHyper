@@ -12,26 +12,26 @@ import (
 	"goHyper/internal/controller/admin"
 	"goHyper/internal/dao"
 	"goHyper/internal/logic"
-	svc2 "goHyper/internal/svc"
-	base2 "goHyper/internal/svc/base"
+	"goHyper/internal/svc"
+	"goHyper/internal/svc/base"
 )
 
 // Injectors from wire.go:
 
-func InitializeSvc() (*svc2.Init, error) {
-	config, err := base2.NewConfig()
+func InitializeSvc() (*svc.Init, error) {
+	config, err := base.NewConfig()
 	if err != nil {
 		return nil, err
 	}
-	logger, err := base2.NewLogger(config)
+	logger, err := base.NewLogger(config)
 	if err != nil {
 		return nil, err
 	}
-	httpServ, err := svc2.NewHttpServ(config, logger)
+	httpServ, err := svc.NewHttpServ(config, logger)
 	if err != nil {
 		return nil, err
 	}
-	db, err := base2.NewMysql(config, logger)
+	db, err := base.NewMysql(config, logger)
 	if err != nil {
 		return nil, err
 	}
@@ -42,12 +42,15 @@ func InitializeSvc() (*svc2.Init, error) {
 	perm := dao.NewPerm(db)
 	logicRole := logic.NewRole(perm, admin, role, config)
 	ctr_adminRole := ctr_admin.NewRole(logicRole)
-	route_adminAdmin := route_admin.NewAdmin(ctr_adminAdmin, ctr_adminRole)
+	menu := dao.NewMenu(db)
+	logicMenu := logic.NewMenu(menu, config)
+	ctr_adminMenu := ctr_admin.NewMenu(logicMenu)
+	route_adminAdmin := route_admin.NewAdmin(ctr_adminAdmin, ctr_adminRole, ctr_adminMenu)
 	route, err := router.NewRoute(config, logger, route_adminAdmin)
 	if err != nil {
 		return nil, err
 	}
-	init, err := svc2.NewInit(logger, httpServ, route)
+	init, err := svc.NewInit(logger, httpServ, route)
 	if err != nil {
 		return nil, err
 	}
