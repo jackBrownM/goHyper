@@ -1,9 +1,9 @@
 package main
 
 import (
-	"goHyper/core/initialize"
+	"fmt"
 )
 
 func main() {
-	initialize.ViperInit()
+	fmt.Println("测试函数")
 }
