@@ -6,16 +6,16 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/healthcheck"
 	route_admin "goHyper/internal/api/admin"
-	base2 "goHyper/internal/svc/base"
+	"goHyper/svc/base"
 )
 
 type Route struct {
-	cfg        *base2.Config
-	logger     *base2.Logger
+	cfg        *base.Config
+	logger     *base.Logger
 	adminRoute *route_admin.Admin
 }
 
-func NewRoute(cfg *base2.Config, logger *base2.Logger, adminRoute *route_admin.Admin,
+func NewRoute(cfg *base.Config, logger *base.Logger, adminRoute *route_admin.Admin,
 ) (*Route, error) {
 	logger.Info("路由初始化...")
 	return &Route{

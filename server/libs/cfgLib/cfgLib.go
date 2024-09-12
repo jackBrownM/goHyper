@@ -10,9 +10,9 @@ import (
 func Load[T any](logger *zap.Logger) (*T, error) {
 	configPath := ""
 	checkPaths := []string{
-		"./resource/config.dev.yaml",
-		"./resource/config.test.yaml",
-		"./resource/config.prod.yaml",
+		"./etc/config.dev.yaml",
+		"./etc/config.test.yaml",
+		"./etc/config.prod.yaml",
 	}
 	for _, checkPath := range checkPaths {
 		if fileLib.Exists(checkPath) {

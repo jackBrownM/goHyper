@@ -5,10 +5,10 @@ import (
 	rsp_admin "goHyper/internal/controller/admin/rsp"
 	"goHyper/internal/dao"
 	"goHyper/internal/ent"
-	"goHyper/internal/svc/base"
 	"goHyper/libs/errLib"
 	"goHyper/libs/resLib"
 	"goHyper/libs/utilLib"
+	"goHyper/svc/base"
 )
 
 type Menu struct {

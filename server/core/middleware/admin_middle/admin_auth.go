@@ -5,9 +5,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"goHyper/core/consts"
 	"goHyper/internal/ent"
-	"goHyper/internal/svc/base"
 	"goHyper/libs/errLib"
 	"goHyper/libs/jwtLib"
+	"goHyper/svc/base"
 	"strconv"
 )
 

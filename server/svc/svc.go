@@ -2,8 +2,8 @@ package svc
 
 import (
 	"goHyper/core/router"
-	"goHyper/internal/svc/base"
 	"goHyper/libs/fiberLib"
+	"goHyper/svc/base"
 )
 
 type Init struct {

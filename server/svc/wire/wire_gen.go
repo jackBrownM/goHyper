@@ -12,26 +12,26 @@ import (
 	"goHyper/internal/controller/admin"
 	"goHyper/internal/dao"
 	"goHyper/internal/logic"
-	"goHyper/internal/svc"
-	"goHyper/internal/svc/base"
+	svc2 "goHyper/svc"
+	base2 "goHyper/svc/base"
 )
 
 // Injectors from wire.go:
 
-func InitializeSvc() (*svc.Init, error) {
-	config, err := base.NewConfig()
+func InitializeSvc() (*svc2.Init, error) {
+	config, err := base2.NewConfig()
 	if err != nil {
 		return nil, err
 	}
-	logger, err := base.NewLogger(config)
+	logger, err := base2.NewLogger(config)
 	if err != nil {
 		return nil, err
 	}
-	httpServ, err := svc.NewHttpServ(config, logger)
+	httpServ, err := svc2.NewHttpServ(config, logger)
 	if err != nil {
 		return nil, err
 	}
-	db, err := base.NewMysql(config, logger)
+	db, err := base2.NewMysql(config, logger)
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +50,7 @@ func InitializeSvc() (*svc.Init, error) {
 	if err != nil {
 		return nil, err
 	}
-	init, err := svc.NewInit(logger, httpServ, route)
+	init, err := svc2.NewInit(logger, httpServ, route)
 	if err != nil {
 		return nil, err
 	}

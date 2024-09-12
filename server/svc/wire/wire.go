@@ -11,17 +11,17 @@ import (
 	"goHyper/internal/controller"
 	"goHyper/internal/dao"
 	"goHyper/internal/logic"
-	"goHyper/internal/svc"
+	svc2 "goHyper/svc"
 )
 
-func InitializeSvc() (*svc.Init, error) {
+func InitializeSvc() (*svc2.Init, error) {
 	wire.Build(
-		svc.NewInit,
-		svc.ProvideSet,
+		svc2.NewInit,
+		svc2.ProvideSet,
 		dao.ProvideSet,
 		logic.ProvideSet,
 		controller.ProvideSet,
 		api.ProvideSet,
 	)
-	return &svc.Init{}, nil
+	return &svc2.Init{}, nil
 }

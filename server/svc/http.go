@@ -2,11 +2,11 @@ package svc
 
 import (
 	"github.com/gofiber/fiber/v2"
-	base2 "goHyper/internal/svc/base"
 	"goHyper/libs/fiberLib"
+	"goHyper/svc/base"
 )
 
-func NewHttpServ(cfg *base2.Config, logger *base2.Logger) (*fiberLib.HttpServ, error) {
+func NewHttpServ(cfg *base.Config, logger *base.Logger) (*fiberLib.HttpServ, error) {
 	logger.Info("HttpServ初始化...")
 	fiberConfig := fiber.Config{}
 	if !cfg.Svc.IsDev() {
