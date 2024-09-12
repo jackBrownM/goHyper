@@ -3,6 +3,7 @@ package ctr_admin
 import (
 	"github.com/gofiber/fiber/v2"
 	"goHyper/core/middleware/admin_ctx"
+	"goHyper/core/middleware/admin_middle"
 	req_admin "goHyper/internal/controller/admin/req"
 	"goHyper/internal/logic"
 	"goHyper/libs/httpLib"
@@ -54,7 +55,7 @@ func (c *Admin) Detail(ctx *fiber.Ctx) error {
 }
 
 func (c *Admin) Self(ctx *fiber.Ctx) error {
-	myId := admin_ctx.GetAdminId(ctx)
+	myId := admin_middle.GetAdminId(ctx)
 	self, err := c.admin.Self(myId)
 	if err != nil {
 		return err
