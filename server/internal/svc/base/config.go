@@ -20,9 +20,11 @@ type Config struct {
 	Admin Jwt
 }
 
+var GlobalConfig *Config
+
 func NewConfig() (*Config, error) {
 	logger, _ := zap.NewDevelopment()
 	logger.Info("Config初始化...")
-	cfg, err := cfgLib.Load[Config](logger)
-	return cfg, err
+	GlobalConfig, err := cfgLib.Load[Config](logger)
+	return GlobalConfig, err
 }

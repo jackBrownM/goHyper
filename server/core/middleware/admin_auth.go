@@ -9,25 +9,23 @@ import (
 	"goHyper/libs/jwtLib"
 )
 
-func AdminAuthN(config *base.Jwt) func(gc *fiber.Ctx) {
-	return func(gc *fiber.Ctx) {
+func AdminAuthN() fiber.Handler {
+	return func(ctx *fiber.Ctx) error {
 		var jwtString string
-		cookieValue := gc.Cookies(consts.AdminTokenName)
+		cookieValue := ctx.Cookies(consts.AdminTokenName)
 		jwtString = cookieValue
-
-		adminJwt, err := jwtLib.DecodeAdminJwt(config.JwtSignKey, config.JwtAesKey, jwtString)
+		adminJwt, err := jwtLib.DecodeAdminJwt(base.GlobalConfig.Admin.JwtSignKey, base.GlobalConfig.Admin.JwtAesKey, jwtString)
 		if err == nil {
 			claims := adminJwt.Claims()
 			if claims.Id == 0 {
-				panic(errLib.AdminIdNotFound)
+				return errLib.AdminIdNotFound
 			}
-			admin_ctx.SetAdminId(gc, claims.Id)
-			gc.Next()
-			return
+			admin_ctx.SetAdminId(ctx, claims.Id)
+			return ctx.Next()
+
 		} else {
-			panic(errLib.JwtError)
+			return errLib.JwtError
 		}
-		panic(errLib.NotLogin)
-		return
+		return ctx.Next()
 	}
 }

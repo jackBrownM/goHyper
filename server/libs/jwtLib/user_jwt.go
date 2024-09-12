@@ -20,6 +20,7 @@ func NewUserJwt(jwtSignKey, jwtAesKey string, claims *UserClaims) *UserJwt {
 		claims:  claims,
 	}
 }
+
 func ParseUserJwt(jwtSignKey, jwtAesKey string, aesJwtStr string) (*UserJwt, error) {
 	aesKeyBytes := []byte(jwtAesKey)
 	jwtBytes, err := alc_crypto.AesBase64Kit.DecryptBase64(aesJwtStr, aesKeyBytes)
@@ -43,6 +44,7 @@ func ParseUserJwt(jwtSignKey, jwtAesKey string, aesJwtStr string) (*UserJwt, err
 		claims:  claims,
 	}, nil
 }
+
 func (a *UserJwt) Encode() (string, error) {
 	if a.claims == nil {
 		return "", errors.New("claims为初始化")

@@ -57,14 +57,14 @@ func (l *Admin) Login(ctx *fiber.Ctx, userName, passWord, ip string) (*rsp_admin
 	nowTime := time.Now()
 	expireTime := time.Duration(180*24) * time.Hour // 180天
 	expiredTime := nowTime.Add(expireTime)
-	claims := jwtLib.UserClaims{
+	claims := jwtLib.AdminClaims{
 		StandardClaims: jwt.StandardClaims{
 			IssuedAt:  nowTime.Unix(),
 			ExpiresAt: expiredTime.Unix(),
 		},
 		Id: sysAdmin.Id,
 	}
-	jwtObj := jwtLib.NewUserJwt(l.config.Admin.JwtSignKey, l.config.Admin.JwtAesKey, &claims)
+	jwtObj := jwtLib.NewAdminJwt(l.config.Admin.JwtSignKey, l.config.Admin.JwtAesKey, &claims)
 	jwtStr, err := jwtObj.Encode()
 	if err != nil {
 		return nil, err

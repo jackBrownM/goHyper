@@ -20,6 +20,7 @@ func NewAdminJwt(jwtSignKey, jwtAesKey string, claims *AdminClaims) *AdminJwt {
 		claims:  claims,
 	}
 }
+
 func DecodeAdminJwt(jwtSignKey, jwtAesKey string, jwtString string) (*AdminJwt, error) {
 	aesJwtStr, err := url.QueryUnescape(jwtString)
 	if err != nil {
@@ -47,6 +48,7 @@ func DecodeAdminJwt(jwtSignKey, jwtAesKey string, jwtString string) (*AdminJwt, 
 		claims:  claims,
 	}, nil
 }
+
 func (a *AdminJwt) Encode() (string, error) {
 	if a.claims == nil {
 		return "", errors.New("claims未初始化")
