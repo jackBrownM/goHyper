@@ -21,7 +21,7 @@ func NewAdminJwt(jwtSignKey, jwtAesKey string, claims *AdminClaims) *AdminJwt {
 	}
 }
 
-func DecodeAdminJwt(jwtSignKey, jwtAesKey string, jwtString string) (*AdminJwt, error) {
+func DecodeAdminJwt(jwtSignKey, jwtAesKey, jwtString string) (*AdminJwt, error) {
 	aesJwtStr, err := url.QueryUnescape(jwtString)
 	if err != nil {
 		return nil, err

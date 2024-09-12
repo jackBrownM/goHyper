@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/pkg/errors"
-	"goHyper/cmd/wire"
+	"goHyper/wire"
 	"log"
 )
 

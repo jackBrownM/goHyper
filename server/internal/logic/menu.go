@@ -41,7 +41,7 @@ func (l *Menu) SelectMenuByRoleId(adminId int) (mapList []interface{}, err error
 	resLib.Copy(&menuRsps, menus)
 	mapList = utilLib.ArrayUtil.ListToTree(
 		utilLib.ConvertUtil.StructsToMaps(menuRsps), "id", "pid", "children")
-	return nil, nil
+	return mapList, nil
 }
 
 func (l *Menu) List() (list []interface{}, err error) {

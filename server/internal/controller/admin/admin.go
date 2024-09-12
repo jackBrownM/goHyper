@@ -1,8 +1,8 @@
 package ctr_admin
 
 import (
+	"fmt"
 	"github.com/gofiber/fiber/v2"
-	"goHyper/core/middleware/admin_ctx"
 	"goHyper/core/middleware/admin_middle"
 	req_admin "goHyper/internal/controller/admin/req"
 	"goHyper/internal/logic"
@@ -56,11 +56,17 @@ func (c *Admin) Detail(ctx *fiber.Ctx) error {
 
 func (c *Admin) Self(ctx *fiber.Ctx) error {
 	myId := admin_middle.GetAdminId(ctx)
+	fmt.Println(myId)
 	self, err := c.admin.Self(myId)
 	if err != nil {
 		return err
 	}
-	return resLib.Ok(ctx, self)
+	//return ctx.JSON(map[string]interface{}{
+	//	"code": 200,
+	//	"msg":  "成功",
+	//	"data": self,
+	//})
+	return resLib.Success(ctx, self)
 }
 
 func (c *Admin) List(ctx *fiber.Ctx) error {
@@ -108,7 +114,7 @@ func (c *Admin) UpInfo(ctx *fiber.Ctx) error {
 	if err := httpLib.CheckDTO(ctx, &updateInfo); err != nil {
 		return err
 	}
-	adminId := admin_ctx.GetAdminId(ctx)
+	adminId := admin_middle.GetAdminId(ctx)
 	err := c.admin.UpInfo(adminId, updateInfo)
 	if err != nil {
 		return err
@@ -118,7 +124,7 @@ func (c *Admin) UpInfo(ctx *fiber.Ctx) error {
 
 func (c *Admin) Delete(ctx *fiber.Ctx) error {
 	adminId := ctx.QueryInt("id")
-	myId := admin_ctx.GetAdminId(ctx)
+	myId := admin_middle.GetAdminId(ctx)
 	err := c.admin.Delete(myId, adminId)
 	if err != nil {
 		return err
@@ -128,7 +134,7 @@ func (c *Admin) Delete(ctx *fiber.Ctx) error {
 
 func (c *Admin) Disable(ctx *fiber.Ctx) error {
 	adminId := ctx.QueryInt("id")
-	myId := admin_ctx.GetAdminId(ctx)
+	myId := admin_middle.GetAdminId(ctx)
 	err := c.admin.Disable(myId, adminId)
 	if err != nil {
 		return err

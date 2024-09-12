@@ -60,4 +60,5 @@ var (
 	RoleNotExist            = NewErr(200013, "Role  not exist")
 	RoleUsed                = NewErr(200014, "Role is used")
 	CannotDeleteMenu        = NewErr(200015, "Cannot delete menu")
+	NullValue               = NewErr(200016, "Null value")
 )

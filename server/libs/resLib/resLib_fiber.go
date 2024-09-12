@@ -21,19 +21,42 @@ func OkTest(ctx *fiber.Ctx, data ...any) error {
 	})
 }
 
-func Ok(ctx *fiber.Ctx, data ...any) error {
-	if len(data) == 0 {
-		return ctx.JSON(Rsp{
-			Code: 0,
-			Msg:  "success",
-			Data: nil,
-		})
+func Success(ctx *fiber.Ctx, data interface{}) error {
+	var response map[string]interface{}
+	if data == nil {
+		response = map[string]interface{}{
+			"code": 0,
+			"msg":  "成功",
+			"data": nil,
+		}
+	} else {
+		response = map[string]interface{}{
+			"code": 0,
+			"msg":  "成功",
+			"data": data,
+		}
 	}
-	return ctx.JSON(Rsp{
-		Code: 0,
-		Msg:  "success",
-		Data: data,
-	})
+
+	return ctx.JSON(response)
+}
+
+func Ok(ctx *fiber.Ctx, data ...interface{}) error {
+	var response map[string]interface{}
+	if data == nil {
+		response = map[string]interface{}{
+			"code": 0,
+			"msg":  "成功",
+			"data": nil,
+		}
+	} else {
+		response = map[string]interface{}{
+			"code": 0,
+			"msg":  "成功",
+			"data": data,
+		}
+	}
+
+	return ctx.JSON(response)
 }
 
 func Error(ctx *fiber.Ctx, err *errLib.Err) error {

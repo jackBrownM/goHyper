@@ -3,20 +3,22 @@ package admin_middle
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gofiber/fiber/v2"
-	"goHyper/core/consts"
 	"goHyper/internal/ent"
 	"goHyper/libs/errLib"
 	"goHyper/libs/jwtLib"
 	"goHyper/svc/base"
-	"strconv"
 )
 
-func AdminAuth() fiber.Handler {
+func AdminAuth() func(c *fiber.Ctx) error {
 	return func(ctx *fiber.Ctx) error {
 		// 获取json
-		jwtString := ctx.Cookies(consts.AdminTokenName)
+		// 尝试从header获取token
+		token := ctx.Get("token")
+		if len(token) == 0 {
+			return errLib.NullValue.Prefix("jwt")
+		}
 		// 解析json
-		adminJwt, err := jwtLib.DecodeAdminJwt(base.GlobalConfig.Admin.JwtSignKey, base.GlobalConfig.Admin.JwtAesKey, jwtString)
+		adminJwt, err := jwtLib.DecodeAdminJwt(base.GlobalConfig.Admin.JwtSignKey, base.GlobalConfig.Admin.JwtAesKey, token)
 		if err != nil {
 			return errLib.JwtError
 		}
@@ -32,16 +34,12 @@ func AdminAuth() fiber.Handler {
 }
 
 func GetAdminId(ctx *fiber.Ctx) int {
-	idStr := ctx.Get("AdminId")
-	id, err := strconv.Atoi(idStr)
-	if err != nil {
-		panic(err)
-	}
-	return id
+	id := ctx.Locals("AdminId")
+	return id.(int)
 }
 
 func SetAdminId(ctx *fiber.Ctx, id int) {
-	ctx.Set("AdminId", strconv.Itoa(id))
+	ctx.Locals("AdminId", id)
 }
 
 func GetAdmin(ctx *gin.Context) *ent.SystemAuthAdmin {

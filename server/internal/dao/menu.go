@@ -37,10 +37,13 @@ func (d *Menu) SelectMenuIdsByRoleId(roleId int) (menuIds []int, err error) {
 	return
 }
 
-func (d *Menu) GetChain() (menus []ent.SystemAuthMenu, err error) {
-	chain := d.db.Model(&ent.SystemAuthMenu{}).Where("menu_type in ? AND is_disable = ?", []string{"M", "C"}, 0)
-	err = chain.Order("menu_sort desc, id").Find(&menus).Error
-	return
+func (d *Menu) GetChain() ([]ent.SystemAuthMenu, error) {
+	var menus []ent.SystemAuthMenu
+	err := d.db.Table("system_auth_menu").Where("menu_type in ? AND is_disable = ?", []string{"M", "C"}, 0).Order("menu_sort desc, id").Find(&menus).Error
+	if err != nil {
+		return nil, err
+	}
+	return menus, nil
 }
 
 func (d *Menu) List() (menus []ent.SystemAuthMenu, err error) {

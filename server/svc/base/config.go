@@ -23,8 +23,9 @@ type Config struct {
 var GlobalConfig *Config
 
 func NewConfig() (*Config, error) {
+	var err error
 	logger, _ := zap.NewDevelopment()
 	logger.Info("Config初始化...")
-	GlobalConfig, err := cfgLib.Load[Config](logger)
+	GlobalConfig, err = cfgLib.Load[Config](logger)
 	return GlobalConfig, err
 }

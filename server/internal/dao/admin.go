@@ -2,13 +2,11 @@ package dao
 
 import (
 	"fmt"
-	"github.com/pkg/errors"
 	req_admin "goHyper/internal/controller/admin/req"
 	rsp_admin "goHyper/internal/controller/admin/rsp"
 	"goHyper/internal/ent"
 	"goHyper/libs/errLib"
 	"goHyper/svc/base"
-	"gorm.io/gorm"
 	"time"
 )
 
@@ -33,7 +31,7 @@ func (d *Admin) Update(adminMap ent.SystemAuthAdmin) (err error) {
 // GetByUserName 根据账号查找管理员
 func (d *Admin) GetByUserName(userName string) (admin ent.SystemAuthAdmin, err error) {
 	err = d.db.Model(ent.SystemAuthAdmin{}).Where("username = ? and is_delete <> 1", userName).Limit(1).First(&admin).Error
-	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+	if err != nil {
 		err = errLib.AccountNotExist
 	}
 	return
@@ -60,9 +58,13 @@ func (d *Admin) GetMemberCnt(roleId int) (count int64) {
 }
 
 // GetById 根据id查找admin
-func (d *Admin) GetById(id int) (admin *ent.SystemAuthAdmin, err error) {
-	err = d.db.Model(admin).Where("id = ? AND is_delete <> 0", id).Limit(1).First(admin).Error
-	return admin, err
+func (d *Admin) GetById(id int) (*ent.SystemAuthAdmin, error) {
+	var admin ent.SystemAuthAdmin
+	err := d.db.Model(&ent.SystemAuthAdmin{}).Where("id = ? AND is_delete = 0", id).Limit(1).First(&admin).Error
+	if err != nil {
+		return nil, err
+	}
+	return &admin, err
 }
 
 // Delete 删除管理员
