@@ -35,7 +35,7 @@ func NewAdmin(admin *dao.Admin, role *dao.Role, config *base.Config) *Admin {
 	}
 }
 
-func (l *Admin) Login(ctx *fiber.Ctx, userName, passWord, ip string) (*rsp_admin.SystemLoginRsp, error) {
+func (l *Admin) Login(userName, passWord, ip string) (*rsp_admin.SystemLoginRsp, error) {
 	sysAdmin, err := l.admin.GetByUserName(userName)
 	if err != nil {
 		return nil, errLib.AccountNotExist
@@ -69,8 +69,6 @@ func (l *Admin) Login(ctx *fiber.Ctx, userName, passWord, ip string) (*rsp_admin
 	if err != nil {
 		return nil, err
 	}
-	// 存cookie
-	resLib.CookieAdd(ctx, consts.AdminTokenName, jwtStr, consts.MaxAge)
 	// 更新登录信息
 	err = l.admin.LoginUpdate(sysAdmin.Id, ip)
 	if err != nil {

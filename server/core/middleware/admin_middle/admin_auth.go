@@ -1,17 +1,15 @@
 package admin_middle
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/gofiber/fiber/v2"
-	"goHyper/internal/ent"
 	"goHyper/libs/errLib"
 	"goHyper/libs/jwtLib"
 	"goHyper/svc/base"
 )
 
+// AdminAuth 后台用户鉴权
 func AdminAuth() func(c *fiber.Ctx) error {
 	return func(ctx *fiber.Ctx) error {
-		// 获取json
 		// 尝试从header获取token
 		token := ctx.Get("token")
 		if len(token) == 0 {
@@ -33,25 +31,13 @@ func AdminAuth() func(c *fiber.Ctx) error {
 	}
 }
 
+// GetAdminId 从上下文获取adminId
 func GetAdminId(ctx *fiber.Ctx) int {
 	id := ctx.Locals("AdminId")
 	return id.(int)
 }
 
+// SetAdminId 向上下文设置adminId
 func SetAdminId(ctx *fiber.Ctx, id int) {
 	ctx.Locals("AdminId", id)
-}
-
-func GetAdmin(ctx *gin.Context) *ent.SystemAuthAdmin {
-	obj, exists := ctx.Get("Admin")
-	if exists {
-		if admin, ok := obj.(*ent.SystemAuthAdmin); ok {
-			return admin
-		}
-	}
-	return nil
-}
-
-func SetAdmin(ctx *gin.Context, member *ent.SystemAuthAdmin) {
-	ctx.Set("Admin", member)
 }

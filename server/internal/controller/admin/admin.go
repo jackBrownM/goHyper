@@ -1,7 +1,6 @@
 package ctr_admin
 
 import (
-	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"goHyper/core/middleware/admin_middle"
 	req_admin "goHyper/internal/controller/admin/req"
@@ -22,21 +21,20 @@ func NewSystem(admin *logic.Admin) *Admin {
 
 // Login 登录
 func (c *Admin) Login(ctx *fiber.Ctx) error {
+	// 结构体校验与获取
 	var req req_admin.SystemLoginReq
 	if err := httpLib.CheckDTO(ctx, &req); err != nil {
 		return err
 	}
 	// 获取ip地址
-	ip := ctx.IP() // 使用 IP() 方法获取 IP 地址
-	token, err := c.admin.Login(ctx, req.UserName, req.PassWord, ip)
+	ip := ctx.IP()
+	// 登录逻辑
+	token, err := c.admin.Login(req.UserName, req.PassWord, ip)
 	if err != nil {
 		return err
 	}
-	return ctx.JSON(map[string]interface{}{
-		"code": 200,
-		"msg":  "成功",
-		"data": token,
-	})
+	// 返回消息
+	return httpLib.Success(ctx, token)
 }
 
 func (c *Admin) Logout(ctx *fiber.Ctx) error {
@@ -56,17 +54,11 @@ func (c *Admin) Detail(ctx *fiber.Ctx) error {
 
 func (c *Admin) Self(ctx *fiber.Ctx) error {
 	myId := admin_middle.GetAdminId(ctx)
-	fmt.Println(myId)
 	self, err := c.admin.Self(myId)
 	if err != nil {
 		return err
 	}
-	//return ctx.JSON(map[string]interface{}{
-	//	"code": 200,
-	//	"msg":  "成功",
-	//	"data": self,
-	//})
-	return resLib.Success(ctx, self)
+	return httpLib.Success(ctx, self)
 }
 
 func (c *Admin) List(ctx *fiber.Ctx) error {
