@@ -95,8 +95,17 @@ func (l *Admin) Detail(id int) (rsp *rsp_admin.SystemAuthAdminRsp, err error) {
 	return
 }
 
-func (l *Admin) List(page req_admin.PageReq, listReq req_admin.SystemAuthAdminListReq) (*rsp_admin.PageRsp, error) {
-	return l.admin.List(page, listReq)
+func (l *Admin) List(page req_admin.PageReq, myId int) (*rsp_admin.PageRsp, error) {
+	admin, err := l.admin.GetById(myId)
+	if err != nil {
+		return nil, err
+	}
+	roleId, err := strconv.Atoi(admin.Role)
+	return l.admin.List(page, req_admin.SystemAuthAdminListReq{
+		Username: admin.Username,
+		Nickname: admin.Nickname,
+		Role:     roleId,
+	})
 }
 
 func (l *Admin) Self(adminId int) (any, error) {

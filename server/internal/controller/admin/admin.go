@@ -63,18 +63,14 @@ func (c *Admin) Self(ctx *fiber.Ctx) error {
 
 func (c *Admin) List(ctx *fiber.Ctx) error {
 	var page req_admin.PageReq
-	var listReq req_admin.SystemAuthAdminListReq
-	if err := httpLib.CheckDTO(ctx, &page); err != nil {
-		return err
-	}
-	if err := httpLib.CheckDTO(ctx, &listReq); err != nil {
-		return err
-	}
-	list, err := c.admin.List(page, listReq)
+	page.PageNo = ctx.QueryInt("pageNo")
+	page.PageSize = ctx.QueryInt("pageSize")
+	myId := admin_middle.GetAdminId(ctx)
+	list, err := c.admin.List(page, myId)
 	if err != nil {
 		return err
 	}
-	return resLib.Ok(ctx, list)
+	return httpLib.Success(ctx, list)
 }
 
 func (c *Admin) Create(ctx *fiber.Ctx) error {
