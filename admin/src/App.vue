@@ -19,12 +19,12 @@ onMounted(async () => {
   // 设置网站logo
   let favicon: HTMLLinkElement = document.querySelector('link[rel="icon"]')!;
   if (favicon) {
-    favicon.href = data.webFavicon;
+    favicon.href = "https://go-admin.likeadmin.cn/api/static/backend_logo.png";
     return;
   }
   favicon = document.createElement("link");
   favicon.rel = "icon";
-  favicon.href = data.webFavicon;
+  favicon.href = "https://go-admin.likeadmin.cn/api/static/backend_logo.png";
   document.head.appendChild(favicon);
 });
 
