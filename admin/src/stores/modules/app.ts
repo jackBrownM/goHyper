@@ -1,4 +1,4 @@
-import { getConfig } from '@/api/app'
+// import { getConfig } from '@/api/app'
 import { defineStore } from 'pinia'
 interface AppSate {
     config: Record<string, any>
