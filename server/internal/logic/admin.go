@@ -187,10 +187,10 @@ func (l *Admin) Update(editReq req_admin.SystemAuthAdminEditReq) error {
 	// 前置判断
 	// ===============================
 	// 判断用户名或称昵是否存在
-	isExitAdmin := l.admin.IsExitAdmin(editReq.Username, editReq.Nickname)
-	if isExitAdmin {
-		return errLib.AccountExist
-	}
+	//isExitAdmin := l.admin.IsExitAdmin(editReq.Username, editReq.Nickname)
+	//if isExitAdmin {
+	//	return errLib.AccountExist
+	//}
 	// 检查role
 	if editReq.Role > 0 && editReq.ID != 1 {
 		_, err := l.role.Detail(editReq.Role)
@@ -268,7 +268,7 @@ func (l *Admin) Delete(id, adminId int) error {
 		return errLib.AccountNotExist
 	}
 	// 系统管理员不能删除
-	if id == 1 {
+	if adminId == 1 {
 		return errLib.SystemAdminCannotDelete
 	}
 	// 不能删除自己
@@ -278,7 +278,7 @@ func (l *Admin) Delete(id, adminId int) error {
 	// ===============================
 	// 更新数据
 	// ===============================
-	err = l.admin.Delete(id)
+	err = l.admin.Delete(adminId)
 	if err != nil {
 		return err
 	}

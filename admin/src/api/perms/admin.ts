@@ -22,7 +22,7 @@ export function adminEdit(params: any) {
 
 // 管理员删除
 export function adminDelete(params: any) {
-    return request.post({ url: '/system/admin/del', params })
+    return request.post({ url: '/system/admin/delete', params })
 }
 
 // 管理员删除

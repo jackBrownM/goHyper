@@ -32,7 +32,7 @@ func (r *Admin) Register(root fiber.Router) {
 		adminGroup.Post("/admin/add", r.system.Create).Name("管理员创建")
 		adminGroup.Post("/admin/edit", r.system.Update).Name("管理员更新")
 		adminGroup.Post("/admin/upInfo", r.system.UpInfo).Name("管理员信息更新")
-		adminGroup.Get("/admin/delete", r.system.Delete).Name("管理员删除")
+		adminGroup.Post("/admin/delete", r.system.Delete).Name("管理员删除")
 		adminGroup.Get("/admin/disable", r.system.Disable).Name("管理员状态切换")
 	}
 	// 角色

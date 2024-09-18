@@ -109,9 +109,12 @@ func (c *Admin) UpInfo(ctx *fiber.Ctx) error {
 }
 
 func (c *Admin) Delete(ctx *fiber.Ctx) error {
-	adminId := ctx.QueryInt("id")
+	var delInfo req_admin.SystemAuthAdminDelReq
+	if err := httpLib.CheckDTO(ctx, &delInfo); err != nil {
+		return err
+	}
 	myId := admin_middle.GetAdminId(ctx)
-	err := c.admin.Delete(myId, adminId)
+	err := c.admin.Delete(myId, delInfo.ID)
 	if err != nil {
 		return err
 	}
