@@ -23,7 +23,7 @@ func (c *Role) All(ctx *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-	return resLib.Ok(ctx, all)
+	return resLib.Success(ctx, all)
 }
 
 func (c *Role) List(ctx *fiber.Ctx) error {
@@ -36,7 +36,7 @@ func (c *Role) List(ctx *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-	return resLib.Ok(ctx, list)
+	return resLib.Success(ctx, list)
 }
 
 func (c *Role) Detail(ctx *fiber.Ctx) error {
@@ -45,7 +45,7 @@ func (c *Role) Detail(ctx *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-	return resLib.Ok(ctx, detail)
+	return resLib.Success(ctx, detail)
 }
 
 func (c *Role) Create(ctx *fiber.Ctx) error {

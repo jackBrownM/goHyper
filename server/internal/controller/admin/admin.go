@@ -42,14 +42,13 @@ func (c *Admin) Logout(ctx *fiber.Ctx) error {
 	return resLib.Ok(ctx)
 }
 
-// 管理员
 func (c *Admin) Detail(ctx *fiber.Ctx) error {
 	adminId := ctx.QueryInt("id")
 	detail, err := c.admin.Detail(adminId)
 	if err != nil {
 		return err
 	}
-	return resLib.Ok(ctx, detail)
+	return resLib.Success(ctx, detail)
 }
 
 func (c *Admin) Self(ctx *fiber.Ctx) error {

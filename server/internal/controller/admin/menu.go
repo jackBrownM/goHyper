@@ -25,11 +25,11 @@ func (c *Menu) Route(ctx *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-	//return ctx.JSON(map[string]interface{}{
+	// return ctx.JSON(map[string]interface{}{
 	//	"code": 200,
 	//	"msg":  "成功",
 	//	"data": list,
-	//})
+	// })
 
 	return resLib.Success(ctx, list)
 }
@@ -39,7 +39,7 @@ func (c *Menu) List(ctx *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-	return resLib.Ok(ctx, list)
+	return resLib.Success(ctx, list)
 }
 
 func (c *Menu) Detail(ctx *fiber.Ctx) error {
@@ -48,7 +48,7 @@ func (c *Menu) Detail(ctx *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-	return resLib.Ok(ctx, detail)
+	return resLib.Success(ctx, detail)
 }
 
 func (c *Menu) Create(ctx *fiber.Ctx) error {

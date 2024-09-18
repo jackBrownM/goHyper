@@ -4,7 +4,6 @@ import (
 	req_admin "goHyper/internal/controller/admin/req"
 	rsp_admin "goHyper/internal/controller/admin/rsp"
 	"goHyper/internal/ent"
-	"goHyper/libs/errLib"
 	"goHyper/libs/resLib"
 	"goHyper/svc/base"
 	"gorm.io/gorm"
@@ -20,17 +19,17 @@ func NewRole(db *base.Mysql) *Role {
 }
 
 func (d *Role) Detail(id int) (*rsp_admin.SystemAuthRoleRsp, error) {
-	var role *ent.SystemAuthRole
-	var rsp = &rsp_admin.SystemAuthRoleRsp{}
-	err := d.db.Model(&ent.SystemAuthRole{}).Where("id = ?", id).Limit(1).First(role).Error
+	var role ent.SystemAuthRole
+	var rsp rsp_admin.SystemAuthRoleRsp
+	err := d.db.Model(&ent.SystemAuthRole{}).Where("id in (?)", id).Limit(1).First(&role).Error
 	if err != nil {
 		return nil, err
 	}
-	if role == nil {
-		return nil, errLib.NotFound.Prefix("role id")
-	}
-	resLib.Copy(rsp, role)
-	return rsp, nil
+	// if role == nil {
+	// 	return nil, errLib.NotFound.Prefix("role id")
+	// }
+	resLib.Copy(&rsp, role)
+	return &rsp, nil
 }
 
 func (d *Role) All() (rsp []rsp_admin.SystemAuthRoleSimpleRsp, err error) {
@@ -61,7 +60,7 @@ func (d *Role) List(page req_admin.PageReq) (*rsp_admin.PageRsp, error) {
 	resLib.Copy(&roleResp, roles)
 	for i := 0; i < len(roleResp); i++ {
 		roleResp[i].Menus = []int{}
-		roleResp[i].Member = d.getMemberCnt(roleResp[i].ID)
+		// roleResp[i].Member = d.getMemberCnt(roleResp[i].ID)
 	}
 	return &rsp_admin.PageRsp{
 		PageNo:   page.PageNo,

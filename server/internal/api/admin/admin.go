@@ -38,7 +38,7 @@ func (r *Admin) Register(root fiber.Router) {
 	// 角色
 	{
 		adminGroup.Get("/role/all", r.role.All).Name("获取所有角色")
-		adminGroup.Get("/role/list", r.role.List).Name("角色列表")
+		adminGroup.Post("/role/list", r.role.List).Name("角色列表")
 		adminGroup.Get("/role/detail", r.role.Detail).Name("角色详情")
 		adminGroup.Post("/role/add", r.role.Create).Name("角色创建")
 		adminGroup.Post("/role/edit", r.role.Update).Name("角色更新")

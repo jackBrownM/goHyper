@@ -53,13 +53,14 @@ func (l *Menu) List() (list []interface{}, err error) {
 	return
 }
 
-func (l *Menu) Detail(id int) (detail *rsp_admin.SystemAuthMenuRsp, err error) {
+func (l *Menu) Detail(id int) (*rsp_admin.SystemAuthMenuRsp, error) {
+	var detail rsp_admin.SystemAuthMenuRsp
 	menu, err := l.menu.GetById(id)
 	if err != nil {
 		return nil, err
 	}
-	resLib.Copy(detail, menu)
-	return
+	resLib.Copy(&detail, menu)
+	return &detail, nil
 }
 
 func (l *Menu) Create(addReq req_admin.SystemAuthMenuAddReq) (err error) {

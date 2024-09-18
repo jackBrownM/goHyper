@@ -46,14 +46,22 @@ func (d *Menu) GetChain() ([]ent.SystemAuthMenu, error) {
 	return menus, nil
 }
 
-func (d *Menu) List() (menus []ent.SystemAuthMenu, err error) {
-	err = d.db.Model(&ent.SystemAuthMenu{}).Order("menu_sort desc, id").Find(&menus).Error
-	return
+func (d *Menu) List() ([]ent.SystemAuthMenu, error) {
+	var menus []ent.SystemAuthMenu
+	err := d.db.Model(&ent.SystemAuthMenu{}).Order("menu_sort desc, id").Find(&menus).Error
+	if err != nil {
+		return nil, err
+	}
+	return menus, nil
 }
 
-func (d *Menu) GetById(id int) (menu *ent.SystemAuthMenu, err error) {
-	err = d.db.Model(&ent.SystemAuthMenu{}).Where("id = ?", id).Limit(1).First(menu).Error
-	return
+func (d *Menu) GetById(id int) (*ent.SystemAuthMenu, error) {
+	var menu ent.SystemAuthMenu
+	err := d.db.Model(&ent.SystemAuthMenu{}).Where("id = ?", id).Limit(1).First(&menu).Error
+	if err != nil {
+		return nil, err
+	}
+	return &menu, nil
 }
 
 func (d *Menu) GetByPid(id int) (menu *ent.SystemAuthMenu, err error) {

@@ -83,16 +83,14 @@ func (l *Admin) Logout(ctx *fiber.Ctx) {
 	resLib.CookieRemove(ctx, consts.AdminTokenName)
 }
 
-func (l *Admin) Detail(id int) (rsp *rsp_admin.SystemAuthAdminRsp, err error) {
+func (l *Admin) Detail(id int) (*rsp_admin.SystemAuthAdminRsp, error) {
+	var rsp rsp_admin.SystemAuthAdminRsp
 	systemAdmin, err := l.admin.GetById(id)
 	if err != nil {
-		return
+		return nil, err
 	}
-	if rsp.Dept == "" {
-		rsp.Dept = strconv.FormatInt(int64(rsp.DeptId), 10)
-	}
-	resLib.Copy(rsp, systemAdmin)
-	return
+	resLib.Copy(&rsp, systemAdmin)
+	return &rsp, nil
 }
 
 func (l *Admin) List(page req_admin.PageReq, myId int) (*rsp_admin.PageRsp, error) {
@@ -166,7 +164,7 @@ func (l *Admin) Create(addReq req_admin.SystemAuthAdminAddReq) error {
 	if err != nil {
 		return err
 	}
-	roleRsp.Member = l.admin.GetMemberCnt(addReq.Role)
+	// roleRsp.Member = l.admin.GetMemberCnt(addReq.Role)
 	roleRsp.Menus, err = l.perm.SelectMenuIdsByRoleId(addReq.Role)
 	if err != nil {
 		return err

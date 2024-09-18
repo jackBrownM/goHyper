@@ -51,10 +51,11 @@ func (d *Admin) IsExitAdmin(userName string, nickName string) bool {
 }
 
 // GetMemberCnt 根据角色ID获取成员数量
-func (d *Admin) GetMemberCnt(roleId int) (count int64) {
+func (d *Admin) GetMemberCnt(roleId int) int64 {
+	var count int64
 	d.db.Model(&ent.SystemAuthAdmin{}).Where(
 		"role = ? AND is_delete = ?", roleId, 0).Count(&count)
-	return
+	return count
 }
 
 // GetById 根据id查找admin

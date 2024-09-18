@@ -37,8 +37,8 @@ func (l *Role) List(pageReq req_admin.PageReq) (*rsp_admin.PageRsp, error) {
 
 func (l *Role) Detail(roleId int) (*rsp_admin.SystemAuthRoleRsp, error) {
 	roleRsp, err := l.role.Detail(roleId)
-	roleRsp.Member = l.admin.GetMemberCnt(roleId)
-	roleRsp.Menus, err = l.perm.SelectMenuIdsByRoleId(roleId)
+	// roleRsp.Member = l.admin.GetMemberCnt(roleId)
+	// roleRsp.Menus, err = l.perm.SelectMenuIdsByRoleId(roleId)
 	if err != nil {
 		return nil, err
 	}
