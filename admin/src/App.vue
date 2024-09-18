@@ -15,7 +15,7 @@ onMounted(async () => {
   //设置主题色
   settingStore.setTheme(isDark.value);
   // 获取配置
-  const data: any = await appStore.getConfig();
+  //   const data: any = await appStore.getConfig();
   // 设置网站logo
   let favicon: HTMLLinkElement = document.querySelector('link[rel="icon"]')!;
   if (favicon) {
