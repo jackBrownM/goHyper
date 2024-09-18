@@ -25,13 +25,13 @@ func Success(ctx *fiber.Ctx, data interface{}) error {
 	var response map[string]interface{}
 	if data == nil {
 		response = map[string]interface{}{
-			"code": 0,
+			"code": 200,
 			"msg":  "成功",
 			"data": nil,
 		}
 	} else {
 		response = map[string]interface{}{
-			"code": 0,
+			"code": 200,
 			"msg":  "成功",
 			"data": data,
 		}

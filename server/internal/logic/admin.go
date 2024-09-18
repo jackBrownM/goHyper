@@ -93,17 +93,8 @@ func (l *Admin) Detail(id int) (*rsp_admin.SystemAuthAdminRsp, error) {
 	return &rsp, nil
 }
 
-func (l *Admin) List(page req_admin.PageReq, myId int) (*rsp_admin.PageRsp, error) {
-	admin, err := l.admin.GetById(myId)
-	if err != nil {
-		return nil, err
-	}
-	roleId, err := strconv.Atoi(admin.Role)
-	return l.admin.List(page, req_admin.SystemAuthAdminListReq{
-		Username: admin.Username,
-		Nickname: admin.Nickname,
-		Role:     roleId,
-	})
+func (l *Admin) List(page req_admin.PageReq) (*rsp_admin.PageRsp, error) {
+	return l.admin.List(page)
 }
 
 func (l *Admin) Self(adminId int) (any, error) {
@@ -160,21 +151,21 @@ func (l *Admin) Create(addReq req_admin.SystemAuthAdminAddReq) error {
 	// ===============================
 	// 整理数据
 	// ===============================
-	roleRsp, err := l.role.Detail(addReq.Role)
-	if err != nil {
-		return err
-	}
+	//roleRsp, err := l.role.Detail(addReq.Role)
+	//if err != nil {
+	//	return err
+	//}
 	// roleRsp.Member = l.admin.GetMemberCnt(addReq.Role)
-	roleRsp.Menus, err = l.perm.SelectMenuIdsByRoleId(addReq.Role)
-	if err != nil {
-		return err
-	}
-	if roleRsp.IsDisable > 0 {
-		return errLib.AccountDisabled
-	}
+	//roleRsp.Menus, err = l.perm.SelectMenuIdsByRoleId(addReq.Role)
+	//if err != nil {
+	//	return err
+	//}
+	//if roleRsp.IsDisable > 0 {
+	//	return errLib.AccountDisabled
+	//}
 	salt := utilLib.RandomString(5)
 	resLib.Copy(&sysAdmin, addReq)
-	sysAdmin.Role = strconv.FormatInt(int64(addReq.Role), 10)
+	//sysAdmin.Role = strconv.FormatInt(int64(addReq.Role), 10)
 	sysAdmin.Salt = salt
 	sysAdmin.Password = utilLib.MakeMd5(strings.Trim(addReq.Password, " ") + salt)
 	if addReq.Avatar == "" {
@@ -184,7 +175,7 @@ func (l *Admin) Create(addReq req_admin.SystemAuthAdminAddReq) error {
 	// ===============================
 	// 创建数据
 	// ===============================
-	err = l.admin.Create(sysAdmin)
+	err := l.admin.Create(sysAdmin)
 	if err != nil {
 		return err
 	}

@@ -64,8 +64,7 @@ func (c *Admin) List(ctx *fiber.Ctx) error {
 	var page req_admin.PageReq
 	page.PageNo = ctx.QueryInt("pageNo")
 	page.PageSize = ctx.QueryInt("pageSize")
-	myId := admin_middle.GetAdminId(ctx)
-	list, err := c.admin.List(page, myId)
+	list, err := c.admin.List(page)
 	if err != nil {
 		return err
 	}
