@@ -51,7 +51,7 @@ func (r *Admin) Register(root fiber.Router) {
 		adminGroup.Get("/menu/detail", r.menu.Detail).Name("菜单详情")
 		adminGroup.Post("/menu/add", r.menu.Create).Name("菜单创建")
 		adminGroup.Post("/menu/edit", r.menu.Update).Name("菜单更新")
-		adminGroup.Get("/menu/delete", r.menu.Delete).Name("菜单删除")
+		adminGroup.Post("/menu/delete", r.menu.Delete).Name("菜单删除")
 	}
 
 }

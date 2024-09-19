@@ -25,12 +25,6 @@ func (c *Menu) Route(ctx *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-	// return ctx.JSON(map[string]interface{}{
-	//	"code": 200,
-	//	"msg":  "成功",
-	//	"data": list,
-	// })
-
 	return resLib.Success(ctx, list)
 }
 
@@ -66,7 +60,11 @@ func (c *Menu) Create(ctx *fiber.Ctx) error {
 
 func (c *Menu) Update(ctx *fiber.Ctx) error {
 	var editReq req_admin.SystemAuthMenuEditReq
-	err := c.menu.Update(editReq)
+	err := httpLib.CheckDTO(ctx, &editReq)
+	if err != nil {
+		return err
+	}
+	err = c.menu.Update(editReq)
 	if err != nil {
 		return err
 	}
@@ -74,8 +72,12 @@ func (c *Menu) Update(ctx *fiber.Ctx) error {
 }
 
 func (c *Menu) Delete(ctx *fiber.Ctx) error {
-	menuId := ctx.QueryInt("id")
-	err := c.menu.Delete(menuId)
+	var delReq req_admin.SystemAuthMenuDelReq
+	err := httpLib.CheckDTO(ctx, &delReq)
+	if err != nil {
+		return err
+	}
+	err = c.menu.Delete(delReq.ID)
 	if err != nil {
 		return err
 	}

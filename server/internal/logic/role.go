@@ -5,7 +5,6 @@ import (
 	rsp_admin "goHyper/internal/controller/admin/rsp"
 	"goHyper/internal/dao"
 	"goHyper/internal/ent"
-	"goHyper/libs/errLib"
 	"goHyper/libs/resLib"
 	"goHyper/svc/base"
 	"strings"
@@ -75,28 +74,15 @@ func (l *Role) Create(addReq req_admin.SystemAuthRoleAddReq) error {
 
 func (l *Role) Update(editReq req_admin.SystemAuthRoleEditReq) error {
 	// ===============================
-	// 前置判断
-	// ===============================
-	var role *ent.SystemAuthRole
-	role, err := l.role.GetByName(strings.Trim(editReq.Name, " "))
-	if err != nil {
-		return nil
-	}
-	if role == nil {
-		return errLib.RoleNotExist
-	}
-	isNameExit := l.role.IsNameExit(editReq.ID, editReq.Name)
-	if isNameExit {
-		return errLib.RoleNameExist
-	}
-	// ===============================
 	// 数据处理
 	// ===============================
-	role.Name = strings.Trim(editReq.Name, " ")
+	var role ent.SystemAuthRole
+	//role.Name = strings.Trim(editReq.Name, " ")
+	resLib.Copy(&role, editReq)
 	// ===============================
 	// 数据更新
 	// ===============================
-	err = l.role.Update(role)
+	err := l.role.Update(&role)
 	// ===============================
 	// 后置操作
 	// ===============================

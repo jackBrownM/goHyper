@@ -5,7 +5,6 @@ import (
 	rsp_admin "goHyper/internal/controller/admin/rsp"
 	"goHyper/internal/dao"
 	"goHyper/internal/ent"
-	"goHyper/libs/errLib"
 	"goHyper/libs/resLib"
 	"goHyper/libs/utilLib"
 	"goHyper/svc/base"
@@ -71,15 +70,16 @@ func (l *Menu) Create(addReq req_admin.SystemAuthMenuAddReq) (err error) {
 }
 
 func (l *Menu) Update(editReq req_admin.SystemAuthMenuEditReq) (err error) {
-	menu, err := l.menu.GetById(editReq.ID)
-	if err != nil {
-		return
-	}
-	if menu == nil {
-		return errLib.NotFound.Prefix("菜单不存在")
-	}
-	resLib.Copy(menu, editReq)
-	err = l.menu.Update(menu)
+	//menu, err := l.menu.GetById(editReq.ID)
+	//if err != nil {
+	//	return
+	//}
+	//if menu == nil {
+	//	return errLib.NotFound.Prefix("菜单不存在")
+	//}
+	var menu ent.SystemAuthMenu
+	resLib.Copy(&menu, editReq)
+	err = l.menu.Update(&menu)
 	if err != nil {
 		return
 	}
@@ -87,20 +87,6 @@ func (l *Menu) Update(editReq req_admin.SystemAuthMenuEditReq) (err error) {
 }
 
 func (l *Menu) Delete(menuId int) (err error) {
-	menu, err := l.menu.GetById(menuId)
-	if err != nil {
-		return
-	}
-	if menu == nil {
-		return errLib.NotFound.Prefix("菜单不存在")
-	}
-	menuPid, err := l.menu.GetByPid(menuId)
-	if err != nil {
-		return
-	}
-	if menuPid != nil {
-		return errLib.CannotDeleteMenu.Prefix("该菜单下存在子菜单，无法删除")
-	}
 	err = l.menu.Delete(menuId)
 	if err != nil {
 		return

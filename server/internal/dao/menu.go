@@ -1,7 +1,6 @@
 package dao
 
 import (
-	"github.com/fatih/structs"
 	"goHyper/internal/ent"
 	"goHyper/svc/base"
 )
@@ -74,9 +73,9 @@ func (d *Menu) Create(menu ent.SystemAuthMenu) (err error) {
 	return
 }
 
-func (d *Menu) Update(menu *ent.SystemAuthMenu) (err error) {
-	err = d.db.Model(menu).Updates(structs.Map(menu)).Error
-	return
+func (d *Menu) Update(menu *ent.SystemAuthMenu) error {
+	err := d.db.Model(ent.SystemAuthMenu{}).Where("id = ?", menu.Id).Updates(menu).Error
+	return err
 }
 
 func (d *Menu) Delete(id int) (err error) {

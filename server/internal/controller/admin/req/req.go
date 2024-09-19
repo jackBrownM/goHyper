@@ -114,3 +114,8 @@ type SystemAuthMenuEditReq struct {
 	IsShow    int    `form:"isShow" binding:"oneof=0 1"`               // 是否显示: [0=否, 1=是]
 	IsDisable int    `form:"isDisable" binding:"oneof=0 1"`            // 是否禁用: [0=否, 1=是]
 }
+
+// SystemAuthMenuDelReq 删除菜单参数
+type SystemAuthMenuDelReq struct {
+	ID int `form:"id" binding:"required,gt=0"` // 主键
+}
