@@ -74,10 +74,14 @@ func (c *Role) Update(ctx *fiber.Ctx) error {
 }
 
 func (c *Role) Delete(ctx *fiber.Ctx) error {
-	roleId := ctx.QueryInt("id")
-	err := c.role.Delete(roleId)
+	var delReq req_admin.SystemAuthRoleDelReq
+	if err := httpLib.CheckDTO(ctx, &delReq); err != nil {
+		return err
+	}
+	err := c.role.Delete(delReq.ID)
 	if err != nil {
 		return err
 	}
+
 	return resLib.Ok(ctx)
 }

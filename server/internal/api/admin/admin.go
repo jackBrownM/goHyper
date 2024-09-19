@@ -42,7 +42,7 @@ func (r *Admin) Register(root fiber.Router) {
 		adminGroup.Get("/role/detail", r.role.Detail).Name("角色详情")
 		adminGroup.Post("/role/add", r.role.Create).Name("角色创建")
 		adminGroup.Post("/role/edit", r.role.Update).Name("角色更新")
-		adminGroup.Get("/role/delete", r.role.Delete).Name("角色删除")
+		adminGroup.Post("/role/delete", r.role.Delete).Name("角色删除")
 	}
 	// 菜单
 	{

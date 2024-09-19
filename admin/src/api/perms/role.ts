@@ -25,5 +25,5 @@ export function roleEdit(params: any) {
 }
 // 删除角色
 export function roleDelete(params: any) {
-    return request.post({ url: '/system/role/del', params })
+    return request.post({ url: '/system/role/delete', params })
 }

@@ -46,20 +46,20 @@ func (l *Role) Detail(roleId int) (*rsp_admin.SystemAuthRoleRsp, error) {
 }
 
 func (l *Role) Create(addReq req_admin.SystemAuthRoleAddReq) error {
-	var role *ent.SystemAuthRole
-	role, err := l.role.GetByName(strings.Trim(addReq.Name, " "))
-	if err != nil {
-		return nil
-	}
-	if role != nil {
-		return errLib.RoleNameExist
-	}
+	// role, err := l.role.GetByName(strings.Trim(addReq.Name, " "))
+	// if err != nil {
+	// 	return nil
+	// }
+	// if role != nil {
+	// 	return errLib.RoleNameExist
+	// }
+	var role ent.SystemAuthRole
 	resLib.Copy(&role, addReq)
 	role.Name = strings.Trim(addReq.Name, " ")
 	// ===============================
 	// 数据创建
 	// ===============================
-	err = l.role.Create(role)
+	err := l.role.Create(role)
 	if err != nil {
 		return err
 	}
@@ -115,21 +115,21 @@ func (l *Role) Delete(roleId int) error {
 	// ===============================
 	// 前置判断
 	// ===============================
-	role, err := l.role.GetById(roleId)
-	if err != nil {
-		return err
-	}
-	if role == nil {
-		return errLib.RoleNotExist
-	}
-	isUsed := l.role.IsUsed(roleId)
-	if isUsed {
-		return errLib.RoleUsed
-	}
+	// role, err := l.role.GetById(roleId)
+	// if err != nil {
+	// 	return err
+	// }
+	// if role == nil {
+	// 	return errLib.RoleNotExist
+	// }
+	// isUsed := l.role.IsUsed(roleId)
+	// if isUsed {
+	// 	return errLib.RoleUsed
+	// }
 	// ===============================
 	// 数据处理
 	// ===============================
-	err = l.role.Delete(roleId)
+	err := l.role.Delete(roleId)
 	if err != nil {
 		return err
 	}

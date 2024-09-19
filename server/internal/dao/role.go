@@ -6,7 +6,6 @@ import (
 	"goHyper/internal/ent"
 	"goHyper/libs/resLib"
 	"goHyper/svc/base"
-	"gorm.io/gorm"
 	"strings"
 )
 
@@ -87,8 +86,8 @@ func (d *Role) GetById(id int) (role *ent.SystemAuthRole, err error) {
 	return
 }
 
-func (d *Role) Create(role *ent.SystemAuthRole) error {
-	return d.db.Create(role).Error
+func (d *Role) Create(role ent.SystemAuthRole) error {
+	return d.db.Create(&role).Error
 }
 
 func (d *Role) IsNameExit(id int, name string) bool {
@@ -108,17 +107,18 @@ func (d *Role) IsUsed(roleId int) bool {
 	return count > 0
 }
 
-func (d *Role) Delete(id int) (err error) {
-	// 事务
-	err = d.db.Transaction(func(tx *gorm.DB) error {
-		err = tx.Delete(&ent.SystemAuthRole{}, "id = ?", id).Error
-		if err != nil {
-			return err
-		}
-		return nil
-	})
-	if err != nil {
-		return
-	}
-	return
+func (d *Role) Delete(id int) error {
+	err := d.db.Delete(&ent.SystemAuthRole{}, "id = ?", id).Error
+	// // 事务
+	// err = d.db.Transaction(func(tx *gorm.DB) error {
+	// 	err = tx.Delete(&ent.SystemAuthRole{}, "id = ?", id).Error
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// 	return nil
+	// })
+	// if err != nil {
+	// 	return
+	// }
+	return err
 }
