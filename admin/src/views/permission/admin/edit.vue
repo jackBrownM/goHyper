@@ -1,6 +1,7 @@
 <template>
     <div class="edit-popup">
-        <popup ref="popupRef" :title="popupTitle" :async="true" width="550px" @confirm="handleSubmit" @close="handleClose">
+        <popup ref="popupRef" :title="popupTitle" :async="true" width="550px" @confirm="handleSubmit"
+            @close="handleClose">
             <el-form ref="formRef" :model="formData" label-width="84px" :rules="formRules">
                 <el-form-item label="账号" prop="username">
                     <el-input v-model="formData.username" :disabled="isRoot" placeholder="请输入账号" clearable />
@@ -9,9 +10,7 @@
                     <el-input v-model="formData.nickname" placeholder="请输入名称" clearable />
                 </el-form-item>
                 <el-form-item label="角色" prop="role">
-                    <el-select v-model="formData.role" :disabled="isRoot" class="flex-1" clearable placeholder="请选择角色"
-                        multiple>
-                        <el-option v-if="isRoot" label="系统管理员" :value="0" />
+                    <el-select v-model="formData.role" :disabled="isRoot" class="flex-1" clearable placeholder="请选择角色">
                         <el-option v-for="(item, index) in optionsData.role" :key="index" :label="item.name"
                             :value="item.id" />
                     </el-select>

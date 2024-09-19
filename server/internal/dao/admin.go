@@ -1,7 +1,6 @@
 package dao
 
 import (
-	"fmt"
 	req_admin "goHyper/internal/controller/admin/req"
 	rsp_admin "goHyper/internal/controller/admin/rsp"
 	"goHyper/internal/ent"
@@ -46,7 +45,7 @@ func (d *Admin) LoginUpdate(adminId int, ip string) (err error) {
 // IsExitAdmin 通过用户名判断是否存在admin
 func (d *Admin) IsExitAdmin(userName string, nickName string) bool {
 	var count int64
-	d.db.Model(ent.SystemAuthAdmin{}).Where("username = ? or nickname = ? and is_delete <> 1", userName, nickName).Count(&count)
+	d.db.Model(ent.SystemAuthAdmin{}).Where("(username = ? or nickname = ? ) and is_delete <> 1", userName, nickName).Count(&count)
 	return count > 0
 }
 
@@ -79,6 +78,10 @@ func (d *Admin) Disable(id, isDisable int) (err error) {
 	return
 }
 
+const adminPagesSql = `
+select admin.*, role.name as role_name from ?  as admin left join ? role on admin.role = role.id  where admin.is_delete = 0 
+`
+
 func (d *Admin) List(page req_admin.PageReq) (*rsp_admin.PageRsp, error) {
 	// 分页信息
 	limit := page.PageSize
@@ -86,31 +89,38 @@ func (d *Admin) List(page req_admin.PageReq) (*rsp_admin.PageRsp, error) {
 	// 查询
 	adminTbName := ent.SystemAuthAdmin{}.TableName()
 	roleTbName := ent.SystemAuthRole{}.TableName()
-	adminModel := d.db.Table(adminTbName+" AS admin").Where("admin.is_delete = ?", 0).Joins(
-		fmt.Sprintf("LEFT JOIN %s ON admin.role = %s.id", roleTbName, roleTbName)).Select(
-		fmt.Sprintf("admin.*,  %s.name as role", roleTbName))
-	//// 条件
-	//if listReq.Username != "" {
+
+	// adminModel := d.db.Table(adminTbName+" AS admin").Where("admin.is_delete = ?", 0).Joins(
+	// 	fmt.Sprintf("LEFT JOIN %s ON admin.role = %s.id", roleTbName, roleTbName)).Select(
+	// 	fmt.Sprintf("admin.*,  %s.name as role", roleTbName))
+	// // 条件
+	// if listReq.Username != "" {
 	//	adminModel = adminModel.Where("username like ?", "%"+listReq.Username+"%")
-	//}
-	//if listReq.Nickname != "" {
+	// }
+	// if listReq.Nickname != "" {
 	//	adminModel = adminModel.Where("nickname like ?", "%"+listReq.Nickname+"%")
-	//}
-	//if listReq.Role >= 0 {
+	// }
+	// if listReq.Role >= 0 {
 	//	adminModel = adminModel.Where("role = ?", listReq.Role)
-	//}
+	// }
 	// 总数
 	var count int64
-	err := adminModel.Count(&count).Error
+	err := d.db.Raw(adminPagesSql, adminTbName, roleTbName, 0, 0).Count(&count).Error
 	if err != nil {
 		return nil, err
 	}
 	// 数据
 	var adminRsp []rsp_admin.SystemAuthAdminRsp
-	err = adminModel.Limit(limit).Offset(offset).Order("id desc, sort desc").Find(&adminRsp).Error
+	err = d.db.Raw(adminPagesSql+"limit ? offset ?", adminTbName, roleTbName, limit, offset).Find(&adminRsp).Error
 	if err != nil {
 		return nil, err
 	}
+	// err = adminModel.Limit(limit).Offset(offset).Order("id desc, sort desc").Find(&adminRsp).Error
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	// 处理
 	for i := 0; i < len(adminRsp); i++ {
 		if adminRsp[i].ID == 1 {
 			adminRsp[i].Role = "系统管理员"

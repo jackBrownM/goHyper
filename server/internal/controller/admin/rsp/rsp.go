@@ -26,8 +26,8 @@ type SystemAuthAdminSelfOneRsp struct {
 	Avatar        string `json:"avatar" structs:"avatar"`               // 头像
 	Role          string `json:"role" structs:"role"`                   // 角色
 	Dept          string `json:"dept" structs:"dept"`                   // 部门
-	IsMultipoint  int8   `json:"isMultipoint" structs:"isMultipoint"`   // 多端登录: [0=否, 1=是]
-	IsDisable     int8   `json:"isDisable" structs:"isDisable"`         // 是否禁用: [0=否, 1=是]
+	IsMultipoint  int    `json:"isMultipoint" structs:"isMultipoint"`   // 多端登录: [0=否, 1=是]
+	IsDisable     int    `json:"isDisable" structs:"isDisable"`         // 是否禁用: [0=否, 1=是]
 	LastLoginIp   string `json:"lastLoginIp" structs:"lastLoginIp"`     // 最后登录IP
 	LastLoginTime int    `json:"lastLoginTime" structs:"lastLoginTime"` // 最后登录时间
 	CreateTime    int    `json:"createTime" structs:"createTime"`       // 创建时间
@@ -54,7 +54,7 @@ type SystemAuthAdminRsp struct {
 	Username      string `json:"username" structs:"username"`           // 账号
 	Nickname      string `json:"nickname" structs:"nickname"`           // 昵称
 	Avatar        string `json:"avatar" structs:"avatar"`               // 头像
-	Role          string `json:"role" structs:"role"`                   // 角色
+	Role          string `json:"role_name" structs:"role"`              // 角色
 	IsMultipoint  int    `json:"isMultipoint" structs:"isMultipoint"`   // 多端登录: [0=否, 1=是]
 	IsDisable     int    `json:"isDisable" structs:"isDisable"`         // 是否禁用: [0=否, 1=是]
 	LastLoginIp   string `json:"lastLoginIp" structs:"lastLoginIp"`     // 最后登录IP
