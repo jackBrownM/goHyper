@@ -78,44 +78,29 @@ func (d *Admin) Disable(id, isDisable int) (err error) {
 	return
 }
 
-const adminPagesSql = `
-select admin.*, role.name as role from system_auth_admin as admin left join system_auth_role role on admin.role = role.id  where admin.is_delete = 0 
-`
-
 func (d *Admin) List(page req_admin.PageReq) (*rsp_admin.PageRsp, error) {
 	// 分页信息
 	limit := page.PageSize
 	offset := page.PageSize * (page.PageNo - 1)
-	// adminModel := d.db.Table(adminTbName+" AS admin").Where("admin.is_delete = ?", 0).Joins(
-	// 	fmt.Sprintf("LEFT JOIN %s ON admin.role = %s.id", roleTbName, roleTbName)).Select(
-	// 	fmt.Sprintf("admin.*,  %s.name as role", roleTbName))
-	// // 条件
-	// if listReq.Username != "" {
-	//	adminModel = adminModel.Where("username like ?", "%"+listReq.Username+"%")
-	// }
-	// if listReq.Nickname != "" {
-	//	adminModel = adminModel.Where("nickname like ?", "%"+listReq.Nickname+"%")
-	// }
-	// if listReq.Role >= 0 {
-	//	adminModel = adminModel.Where("role = ?", listReq.Role)
-	// }
+	// 构建查询模型
+	adminModel := d.db.Table(ent.TableNameSystemAuthAdmin+" AS admin").
+		Joins("LEFT JOIN "+ent.TableNameSystemAuthRole+" role ON admin.role = role.id").
+		Where("admin.is_delete = ?", 0)
 	// 总数
-	// var count int64
-	// err := d.db.Raw(adminPagesSql).Select("count(*)").Count(&count).Error
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// 数据
-	var adminRsp []rsp_admin.SystemAuthAdminRsp
-	err := d.db.Raw(adminPagesSql+"limit ? offset ?", limit, offset).Find(&adminRsp).Error
+	var count int64
+	err := adminModel.Count(&count).Error
 	if err != nil {
 		return nil, err
 	}
-	// err = adminModel.Limit(limit).Offset(offset).Order("id desc, sort desc").Find(&adminRsp).Error
-	// if err != nil {
-	// 	return nil, err
-	// }
-
+	// 数据
+	var adminRsp []rsp_admin.SystemAuthAdminRsp
+	err = adminModel.Limit(limit).Offset(offset).
+		Order("admin.id DESC, admin.sort DESC").
+		Select("admin.*, role.name as role").
+		Find(&adminRsp).Error
+	if err != nil {
+		return nil, err
+	}
 	// 处理
 	for i := 0; i < len(adminRsp); i++ {
 		if adminRsp[i].ID == 1 {
@@ -125,7 +110,7 @@ func (d *Admin) List(page req_admin.PageReq) (*rsp_admin.PageRsp, error) {
 	return &rsp_admin.PageRsp{
 		PageNo:   page.PageNo,
 		PageSize: page.PageSize,
-		Count:    2,
+		Count:    count,
 		Lists:    adminRsp,
 	}, nil
 }

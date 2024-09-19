@@ -1,5 +1,7 @@
 package ent
 
+const TableNameSystemAuthAdmin = "system_auth_admin"
+
 type SystemAuthAdmin struct {
 	Id            int    `gorm:"column:id"`              // 主键
 	No            string `gorm:"column:no"`              // 用户编号

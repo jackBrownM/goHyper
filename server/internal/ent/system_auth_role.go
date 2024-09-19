@@ -1,5 +1,7 @@
 package ent
 
+const TableNameSystemAuthRole = "system_auth_role"
+
 type SystemAuthRole struct {
 	Id         int    `gorm:"column:id"`          // 主键
 	Name       string `gorm:"column:name"`        // 角色名称
