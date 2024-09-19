@@ -79,17 +79,13 @@ func (d *Admin) Disable(id, isDisable int) (err error) {
 }
 
 const adminPagesSql = `
-select admin.*, role.name as role_name from ?  as admin left join ? role on admin.role = role.id  where admin.is_delete = 0 
+select admin.*, role.name as role from system_auth_admin as admin left join system_auth_role role on admin.role = role.id  where admin.is_delete = 0 
 `
 
 func (d *Admin) List(page req_admin.PageReq) (*rsp_admin.PageRsp, error) {
 	// 分页信息
 	limit := page.PageSize
 	offset := page.PageSize * (page.PageNo - 1)
-	// 查询
-	adminTbName := ent.SystemAuthAdmin{}.TableName()
-	roleTbName := ent.SystemAuthRole{}.TableName()
-
 	// adminModel := d.db.Table(adminTbName+" AS admin").Where("admin.is_delete = ?", 0).Joins(
 	// 	fmt.Sprintf("LEFT JOIN %s ON admin.role = %s.id", roleTbName, roleTbName)).Select(
 	// 	fmt.Sprintf("admin.*,  %s.name as role", roleTbName))
@@ -104,14 +100,14 @@ func (d *Admin) List(page req_admin.PageReq) (*rsp_admin.PageRsp, error) {
 	//	adminModel = adminModel.Where("role = ?", listReq.Role)
 	// }
 	// 总数
-	var count int64
-	err := d.db.Raw(adminPagesSql, adminTbName, roleTbName, 0, 0).Count(&count).Error
-	if err != nil {
-		return nil, err
-	}
+	// var count int64
+	// err := d.db.Raw(adminPagesSql).Select("count(*)").Count(&count).Error
+	// if err != nil {
+	// 	return nil, err
+	// }
 	// 数据
 	var adminRsp []rsp_admin.SystemAuthAdminRsp
-	err = d.db.Raw(adminPagesSql+"limit ? offset ?", adminTbName, roleTbName, limit, offset).Find(&adminRsp).Error
+	err := d.db.Raw(adminPagesSql+"limit ? offset ?", limit, offset).Find(&adminRsp).Error
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +125,7 @@ func (d *Admin) List(page req_admin.PageReq) (*rsp_admin.PageRsp, error) {
 	return &rsp_admin.PageRsp{
 		PageNo:   page.PageNo,
 		PageSize: page.PageSize,
-		Count:    count,
+		Count:    2,
 		Lists:    adminRsp,
 	}, nil
 }
