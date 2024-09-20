@@ -2,7 +2,6 @@ package httpLib
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"goHyper/libs/errLib"
 )
 
 func Success(ctx *fiber.Ctx, data interface{}) error {
@@ -21,15 +20,6 @@ func Success(ctx *fiber.Ctx, data interface{}) error {
 		}
 	}
 
-	return ctx.JSON(response)
-}
-
-func Fail(ctx *fiber.Ctx, err *errLib.Err) error {
-	response := map[string]interface{}{
-		"code": err.Code,
-		"msg":  err.Message,
-		"data": nil,
-	}
 	return ctx.JSON(response)
 }
 
