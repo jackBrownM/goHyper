@@ -28,7 +28,7 @@ func (c *Role) All(ctx *fiber.Ctx) error {
 
 func (c *Role) List(ctx *fiber.Ctx) error {
 	var pageReq req_admin.PageReq
-	err := httpLib.CheckDTO(ctx, &pageReq)
+	err := httpLib.CheckPostDTO(ctx, &pageReq)
 	if err != nil {
 		return err
 	}
@@ -50,7 +50,7 @@ func (c *Role) Detail(ctx *fiber.Ctx) error {
 
 func (c *Role) Create(ctx *fiber.Ctx) error {
 	var addReq req_admin.SystemAuthRoleAddReq
-	if err := httpLib.CheckDTO(ctx, &addReq); err != nil {
+	if err := httpLib.CheckPostDTO(ctx, &addReq); err != nil {
 		return err
 	}
 	err := c.role.Create(addReq)
@@ -62,7 +62,7 @@ func (c *Role) Create(ctx *fiber.Ctx) error {
 
 func (c *Role) Update(ctx *fiber.Ctx) error {
 	var editReq req_admin.SystemAuthRoleEditReq
-	if err := httpLib.CheckDTO(ctx, &editReq); err != nil {
+	if err := httpLib.CheckPostDTO(ctx, &editReq); err != nil {
 		return err
 	}
 	err := c.role.Update(editReq)
@@ -75,7 +75,7 @@ func (c *Role) Update(ctx *fiber.Ctx) error {
 
 func (c *Role) Delete(ctx *fiber.Ctx) error {
 	var delReq req_admin.SystemAuthRoleDelReq
-	if err := httpLib.CheckDTO(ctx, &delReq); err != nil {
+	if err := httpLib.CheckPostDTO(ctx, &delReq); err != nil {
 		return err
 	}
 	err := c.role.Delete(delReq.ID)

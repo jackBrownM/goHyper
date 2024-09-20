@@ -47,7 +47,7 @@ func (c *Menu) Detail(ctx *fiber.Ctx) error {
 
 func (c *Menu) Create(ctx *fiber.Ctx) error {
 	var req req_admin.SystemAuthMenuAddReq
-	err := httpLib.CheckDTO(ctx, &req)
+	err := httpLib.CheckPostDTO(ctx, &req)
 	if err != nil {
 		return err
 	}
@@ -60,7 +60,7 @@ func (c *Menu) Create(ctx *fiber.Ctx) error {
 
 func (c *Menu) Update(ctx *fiber.Ctx) error {
 	var editReq req_admin.SystemAuthMenuEditReq
-	err := httpLib.CheckDTO(ctx, &editReq)
+	err := httpLib.CheckPostDTO(ctx, &editReq)
 	if err != nil {
 		return err
 	}
@@ -73,7 +73,7 @@ func (c *Menu) Update(ctx *fiber.Ctx) error {
 
 func (c *Menu) Delete(ctx *fiber.Ctx) error {
 	var delReq req_admin.SystemAuthMenuDelReq
-	err := httpLib.CheckDTO(ctx, &delReq)
+	err := httpLib.CheckPostDTO(ctx, &delReq)
 	if err != nil {
 		return err
 	}

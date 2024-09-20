@@ -23,8 +23,8 @@ func Success(ctx *fiber.Ctx, data interface{}) error {
 	return ctx.JSON(response)
 }
 
-// CheckDTO post请求参数保存结构体
-func CheckDTO(ctx *fiber.Ctx, req interface{}) error {
+// CheckPostDTO post请求参数保存结构体
+func CheckPostDTO(ctx *fiber.Ctx, req interface{}) error {
 	err := ctx.BodyParser(&req)
 	if err != nil {
 		return err

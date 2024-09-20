@@ -23,7 +23,7 @@ func NewSystem(admin *logic.Admin) *Admin {
 func (c *Admin) Login(ctx *fiber.Ctx) error {
 	// 结构体校验与获取
 	var req req_admin.SystemLoginReq
-	if err := httpLib.CheckDTO(ctx, &req); err != nil {
+	if err := httpLib.CheckPostDTO(ctx, &req); err != nil {
 		return err
 	}
 	// 获取ip地址
@@ -78,7 +78,7 @@ func (c *Admin) List(ctx *fiber.Ctx) error {
 
 func (c *Admin) Create(ctx *fiber.Ctx) error {
 	var addReq req_admin.SystemAuthAdminAddReq
-	if err := httpLib.CheckDTO(ctx, &addReq); err != nil {
+	if err := httpLib.CheckPostDTO(ctx, &addReq); err != nil {
 		return err
 	}
 	err := c.admin.Create(addReq)
@@ -90,7 +90,7 @@ func (c *Admin) Create(ctx *fiber.Ctx) error {
 
 func (c *Admin) Update(ctx *fiber.Ctx) error {
 	var editReq req_admin.SystemAuthAdminEditReq
-	if err := httpLib.CheckDTO(ctx, &editReq); err != nil {
+	if err := httpLib.CheckPostDTO(ctx, &editReq); err != nil {
 		return err
 	}
 	err := c.admin.Update(editReq)
@@ -102,7 +102,7 @@ func (c *Admin) Update(ctx *fiber.Ctx) error {
 
 func (c *Admin) UpInfo(ctx *fiber.Ctx) error {
 	var updateInfo req_admin.SystemAuthAdminUpdateReq
-	if err := httpLib.CheckDTO(ctx, &updateInfo); err != nil {
+	if err := httpLib.CheckPostDTO(ctx, &updateInfo); err != nil {
 		return err
 	}
 	adminId := admin_middle.GetAdminId(ctx)
@@ -115,7 +115,7 @@ func (c *Admin) UpInfo(ctx *fiber.Ctx) error {
 
 func (c *Admin) Delete(ctx *fiber.Ctx) error {
 	var delInfo req_admin.SystemAuthAdminDelReq
-	if err := httpLib.CheckDTO(ctx, &delInfo); err != nil {
+	if err := httpLib.CheckPostDTO(ctx, &delInfo); err != nil {
 		return err
 	}
 	myId := admin_middle.GetAdminId(ctx)
