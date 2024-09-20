@@ -4,9 +4,6 @@ const TableNameSystemAuthAdmin = "system_auth_admin"
 
 type SystemAuthAdmin struct {
 	Id            int    `gorm:"column:id"`              // 主键
-	No            string `gorm:"column:no"`              // 用户编号
-	DeptId        int    `gorm:"column:dept_id"`         // 部门ID
-	PostId        int    `gorm:"column:post_id"`         // 岗位ID
 	Username      string `gorm:"column:username"`        // 用户账号
 	Nickname      string `gorm:"column:nickname"`        // 用户昵称
 	Password      string `gorm:"column:password"`        // 用户密码

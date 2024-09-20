@@ -62,10 +62,14 @@ func (c *Admin) Self(ctx *fiber.Ctx) error {
 
 func (c *Admin) List(ctx *fiber.Ctx) error {
 	var page req_admin.PageReq
+	var listReq req_admin.SystemAuthAdminListReq
 	if err := httpLib.CheckGetDTO(ctx, &page); err != nil {
 		return err
 	}
-	list, err := c.admin.List(page)
+	if err := httpLib.CheckGetDTO(ctx, &listReq); err != nil {
+		return err
+	}
+	list, err := c.admin.List(page, listReq)
 	if err != nil {
 		return err
 	}

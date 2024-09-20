@@ -78,7 +78,7 @@ func (d *Admin) Disable(id, isDisable int) (err error) {
 	return
 }
 
-func (d *Admin) List(page req_admin.PageReq) (*rsp_admin.PageRsp, error) {
+func (d *Admin) List(page req_admin.PageReq, listReq req_admin.SystemAuthAdminListReq) (*rsp_admin.PageRsp, error) {
 	// 分页信息
 	limit := page.PageSize
 	offset := page.PageSize * (page.PageNo - 1)
@@ -86,6 +86,16 @@ func (d *Admin) List(page req_admin.PageReq) (*rsp_admin.PageRsp, error) {
 	adminModel := d.db.Table(ent.TableNameSystemAuthAdmin+" AS admin").
 		Joins("LEFT JOIN "+ent.TableNameSystemAuthRole+" role ON admin.role = role.id").
 		Where("admin.is_delete = ?", 0)
+	// 条件
+	if listReq.Username != "" {
+		adminModel = adminModel.Where("username like ?", "%"+listReq.Username+"%")
+	}
+	if listReq.Nickname != "" {
+		adminModel = adminModel.Where("nickname like ?", "%"+listReq.Nickname+"%")
+	}
+	if listReq.Role > 0 {
+		adminModel = adminModel.Where("role = ?", listReq.Role)
+	}
 	// 总数
 	var count int64
 	err := adminModel.Count(&count).Error
