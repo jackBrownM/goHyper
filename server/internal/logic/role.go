@@ -37,7 +37,7 @@ func (l *Role) List(pageReq req_admin.PageReq) (*rsp_admin.PageRsp, error) {
 func (l *Role) Detail(roleId int) (*rsp_admin.SystemAuthRoleRsp, error) {
 	roleRsp, err := l.role.Detail(roleId)
 	// roleRsp.Member = l.admin.GetMemberCnt(roleId)
-	// roleRsp.Menus, err = l.perm.SelectMenuIdsByRoleId(roleId)
+	roleRsp.Menus, err = l.perm.SelectMenuIdsByRoleId(roleId)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +77,7 @@ func (l *Role) Update(editReq req_admin.SystemAuthRoleEditReq) error {
 	// 数据处理
 	// ===============================
 	var role ent.SystemAuthRole
-	//role.Name = strings.Trim(editReq.Name, " ")
+	// role.Name = strings.Trim(editReq.Name, " ")
 	resLib.Copy(&role, editReq)
 	// ===============================
 	// 数据更新

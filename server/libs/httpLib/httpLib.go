@@ -33,9 +33,19 @@ func Fail(ctx *fiber.Ctx, err *errLib.Err) error {
 	return ctx.JSON(response)
 }
 
+// CheckDTO post请求参数保存结构体
 func CheckDTO(ctx *fiber.Ctx, req interface{}) error {
 	err := ctx.BodyParser(&req)
 	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// CheckGetDTO get请求参数保存结构体
+func CheckGetDTO(ctx *fiber.Ctx, req interface{}) error {
+	// 绑定查询参数到结构体
+	if err := ctx.QueryParser(req); err != nil {
 		return err
 	}
 	return nil

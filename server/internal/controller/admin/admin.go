@@ -62,8 +62,9 @@ func (c *Admin) Self(ctx *fiber.Ctx) error {
 
 func (c *Admin) List(ctx *fiber.Ctx) error {
 	var page req_admin.PageReq
-	page.PageNo = ctx.QueryInt("pageNo")
-	page.PageSize = ctx.QueryInt("pageSize")
+	if err := httpLib.CheckGetDTO(ctx, &page); err != nil {
+		return err
+	}
 	list, err := c.admin.List(page)
 	if err != nil {
 		return err
