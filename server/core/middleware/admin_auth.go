@@ -1,4 +1,4 @@
-package admin_middle
+package middleware
 
 import (
 	"github.com/gofiber/fiber/v2"

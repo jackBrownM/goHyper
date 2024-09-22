@@ -3,8 +3,8 @@ package router
 import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/healthcheck"
+	"goHyper/core/middleware"
 	route_admin "goHyper/internal/api/admin"
 	"goHyper/svc/base"
 )
@@ -27,19 +27,16 @@ func NewRoute(cfg *base.Config, logger *base.Logger, adminRoute *route_admin.Adm
 
 func (r *Route) Register(app *fiber.App) {
 	r.logger.Info("注册路由")
+	// 设置通用中间件
+	//	TODO 设置静态路径
+	app.Use(middleware.Cors())
+	// TODO 演示模式处理
 	// ========================
 	// admin路由组
 	// ========================
 	adminGroup := app.Group("/admin")
-	// 添加CORS中间件到adminGroup
-	adminGroup.Use(cors.New(cors.Config{
-		AllowOrigins: "*",                              // 替换为实际需要的域名
-		AllowHeaders: "*",                              // 替换为实际需要的头部信息
-		AllowMethods: "OPTIONS, GET, POST,DELETE, PUT", // 移除重复项
-		MaxAge:       3600,                             // 根据实际需求调整
-	}))
 	adminGroup.Use(healthcheck.New())
-	// 路由模块
+	// 注册路由
 	r.adminRoute.Register(adminGroup)
 	// ========================
 	// 打印所有路由

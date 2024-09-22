@@ -2,7 +2,7 @@ package ctr_admin
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"goHyper/core/middleware/admin_middle"
+	"goHyper/core/middleware"
 	req_admin "goHyper/internal/controller/admin/req"
 	"goHyper/internal/logic"
 	"goHyper/libs/httpLib"
@@ -52,7 +52,7 @@ func (c *Admin) Detail(ctx *fiber.Ctx) error {
 }
 
 func (c *Admin) Self(ctx *fiber.Ctx) error {
-	myId := admin_middle.GetAdminId(ctx)
+	myId := middleware.GetAdminId(ctx)
 	self, err := c.admin.Self(myId)
 	if err != nil {
 		return err
@@ -105,7 +105,7 @@ func (c *Admin) UpInfo(ctx *fiber.Ctx) error {
 	if err := httpLib.CheckPostDTO(ctx, &updateInfo); err != nil {
 		return err
 	}
-	adminId := admin_middle.GetAdminId(ctx)
+	adminId := middleware.GetAdminId(ctx)
 	err := c.admin.UpInfo(adminId, updateInfo)
 	if err != nil {
 		return err
@@ -118,7 +118,7 @@ func (c *Admin) Delete(ctx *fiber.Ctx) error {
 	if err := httpLib.CheckPostDTO(ctx, &delInfo); err != nil {
 		return err
 	}
-	myId := admin_middle.GetAdminId(ctx)
+	myId := middleware.GetAdminId(ctx)
 	err := c.admin.Delete(myId, delInfo.ID)
 	if err != nil {
 		return err
@@ -128,7 +128,7 @@ func (c *Admin) Delete(ctx *fiber.Ctx) error {
 
 func (c *Admin) Disable(ctx *fiber.Ctx) error {
 	adminId := ctx.QueryInt("id")
-	myId := admin_middle.GetAdminId(ctx)
+	myId := middleware.GetAdminId(ctx)
 	err := c.admin.Disable(myId, adminId)
 	if err != nil {
 		return err

@@ -2,7 +2,7 @@ package route_admin
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"goHyper/core/middleware/admin_middle"
+	"goHyper/core/middleware"
 	"goHyper/internal/controller/admin"
 )
 
@@ -24,7 +24,7 @@ func (r *Admin) Register(root fiber.Router) {
 		group.Post("/logout", r.system.Logout).Name("退出系统")
 	}
 	// 管理员
-	adminGroup := group.Use(admin_middle.AdminAuth())
+	adminGroup := group.Use(middleware.AdminAuth())
 	{
 		adminGroup.Get("/admin/detail", r.system.Detail).Name("管理员详情")
 		adminGroup.Get("/admin/list", r.system.List).Name("管理员列表")
